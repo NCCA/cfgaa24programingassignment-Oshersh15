@@ -1,5 +1,5 @@
 # s5301744 - Osher Shechter CFGAA Assignment
-##
+
 - **Assignment Idea #1: Foosball**   
     Creating a foosball game that simulates the classic tabletop game in a virtual environment. Players will control the movement and rotation of the rods to hit the ball and score goals.
 
@@ -24,7 +24,7 @@
     The game first sets up the OpenGL environment, loads the models for the foosball table, rods, players, ball. The game sets up the physics engine to hamdle the ball movement, collisions, and interactions between the ball, players, and table boundaries. During the game loop, the program processes player inputs for moving the rods, updates the positions of the ball and players based on calculations, and checks for goals to update the score accordingly. The game concludes until either the set score (10) has been reached or a player chooses to end the game, at which point the game will display the final score and offer to start a new game or exit.  
 
 
-
+##
 - **Assignment Idea #2: First-person POV Pac-Man**     
     A 3D twist on the classic arcade game. player will navigate the 3D maze, collecting dots and power-ups, and avoiding ghosts.
 

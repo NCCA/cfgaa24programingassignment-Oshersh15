@@ -20,7 +20,8 @@
     - **Renderer** - Rendering the scene in 3D using OpenGL.
     - **UI** - Manages in-game UI elements like scoreboards, game menu.
 
-- **How the program will flow:**
+- **How the program will flow:**  
+    The game first sets up the OpenGL environment, loads the models for the foosball table, rods, players, ball. The game sets up the physics engine to hamdle the ball movement, collisions, and interactions between the ball, players, and table boundaries. During the game loop, the program processes player inputs for moving the rods, updates the positions of the ball and players based on calculations, and checks for goals to update the score accordingly. The game concludes until either the set score (10) has been reached or a player chooses to end the game, at which point the game will display the final score and offer to start a new game or exit.  
 
 
 
@@ -42,5 +43,5 @@
     - **Inventory** - Manages the player's collection of power-ups. Allows for storing and using them.
     - **Physics** - Handles movement, collision detection, and interactions between game entities.
 
-- **How the program will flow:**
+- **How the program will flow:**  
     The game first sets up the OpenGL environment, loads the maze layout, initialises the game entities at the starting positions. During the game loop, the game continously processes player input to navigate the maze, update the state of ghosts, checks for collisions between the player, dots, power-ups, and ghosts, and applies the effects of the power-ups used by the player. The game also updates the inventory when power-ups are collected and allows the player to use them when he chooses to. Rendering occurs in each loop iteration, drawing the maze, player's first-person view, ghosts, and UI elements from the current game state. The loop runs until the game ends which is when all lives (3) are ran out, then the game concludes by displaying the final score and offering an option to restart or exit.

@@ -1,6 +1,6 @@
 # s5301744 - Osher Shechter CFGAA Assignment
 
-## - **Assignment Idea #1: Foosball**   
+- **Assignment Idea #1: Foosball**   
     Creating a foosball game that simulates the classic tabletop game in a virtual environment. Players will control the movement and rotation of the rods to hit the ball and score goals.
 
 - **What i'm planning on doing:**
@@ -24,7 +24,7 @@
 
 
 
-## - **Assignment Idea #2: First-person POV Pac-Man**     
+- **Assignment Idea #2: First-person POV Pac-Man**     
     A 3D twist on the classic arcade game. player will navigate the 3D maze, collecting dots and power-ups, and avoiding ghosts.
 
 - **What i'm planning on doing:**
@@ -41,3 +41,6 @@
     - **Ghost** - Represents the ghosts, managing their behaviours of chasing the player and responding to power-ups by exploding to pixels when getting hit by them. Also responsible for resetting the ghosts after they explode.
     - **Inventory** - Manages the player's collection of power-ups. Allows for storing and using them.
     - **Physics** - Handles movement, collision detection, and interactions between game entities.
+
+- **How the program will flow:**
+    The game first sets up the OpenGL environment, loads the maze layout, initialises the game entities at the starting positions. During the game loop, the game continously processes player input to navigate the maze, update the state of ghosts, checks for collisions between the player, dots, power-ups, and ghosts, and applies the effects of the power-ups used by the player. The game also updates the inventory when power-ups are collected and allows the player to use them when he chooses to. Rendering occurs in each loop iteration, drawing the maze, player's first-person view, ghosts, and UI elements from the current game state. The loop runs until the game ends which is when all lives (3) are ran out, then the game concludes by displaying the final score and offering an option to restart or exit.

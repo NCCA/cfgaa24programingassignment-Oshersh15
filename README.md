@@ -1,6 +1,6 @@
 # s5301744 - Osher Shechter CFGAA Assignment
 
-- Assignment Idea #1: Foosball
+- Assignment Idea #1: Foosball \n
     Creating a foosball game that simulates the classic tabletop game in a virtual environment. Players will control the movement and rotation of the rods to hit the ball and score goals.
 
 - What i'm planning on doing:
@@ -23,7 +23,7 @@
 - How the program will flow
 
 
-- Assignment Idea #2: First-person POV Pac-Man
+- Assignment Idea #2: First-person POV Pac-Man /n
     A 3D twist on the classic arcade game. player will navigate the 3D maze, collecting dots and power-ups, and avoiding ghosts.
 
 - What i'm planning on doing: 

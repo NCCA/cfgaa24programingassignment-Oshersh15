@@ -1,6 +1,6 @@
 # s5301744 - Osher Shechter CFGAA Assignment
 
-- **Assignment Idea #1: Foosball**   
+## - **Assignment Idea #1: Foosball**   
     Creating a foosball game that simulates the classic tabletop game in a virtual environment. Players will control the movement and rotation of the rods to hit the ball and score goals.
 
 - **What i'm planning on doing:**
@@ -24,7 +24,7 @@
 
 
 
-- **Assignment Idea #2: First-person POV Pac-Man**     
+## - **Assignment Idea #2: First-person POV Pac-Man**     
     A 3D twist on the classic arcade game. player will navigate the 3D maze, collecting dots and power-ups, and avoiding ghosts.
 
 - **What i'm planning on doing:**
@@ -33,7 +33,7 @@
     - Create a control system that allows players to navigate the maze, and collect and use power-ups.
 
 - **Design of classes / data structures:**
-    - **Game** - Manage the overall game state, including starting, pausing, ending, keeping track of the 
+    - **Game** - Manage the overall game state, including starting, pausing, ending, game loop and interactions between components. 
     - **Player (Pac-Man)** - Represents the player navigating the maze. It tracks the first-person camera position, orientation, collected dots, and inventory of power-ups.
     - **Maze** - The layout of the maze, including walls, dots, and power-ups locations. Also responsible for rendering the maze from the player's perspective.
     - **Dot** - Collectible dot in the maze, manages state (collected or not) and rendering.

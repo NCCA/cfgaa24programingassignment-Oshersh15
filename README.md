@@ -45,3 +45,7 @@
 
 - **How the program will flow:**  
     The game first sets up the OpenGL environment, loads the maze layout, initialises the game entities at the starting positions. During the game loop, the game continously processes player input to navigate the maze, update the state of ghosts, checks for collisions between the player, dots, power-ups, and ghosts, and applies the effects of the power-ups used by the player. The game also updates the inventory when power-ups are collected and allows the player to use them when he chooses to. Rendering occurs in each loop iteration, drawing the maze, player's first-person view, ghosts, and UI elements from the current game state. The loop runs until the game ends which is when all lives (3) are ran out, then the game concludes by displaying the final score and offering an option to restart or exit.
+
+    ![alt tag](http://nccastaff.bournemouth.ac.uk/jmacey/GraphicsLib/Demos/VAOPrims.png)
+
+A simple scene using all of the built in VAO primitives, this has approx 350,000 Verts so is a good performance test of NGL

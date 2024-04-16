@@ -45,6 +45,12 @@ class NGLScene : public QOpenGLWindow
     //----------------------------------------------------------------------------------------------------------------------
     void resizeGL(int _w, int _h) override;
 
+    QVector<QVector<int>> loadMaze();
+
+    void processArray();
+    void renderMaze();
+
+
 
 private:
     //----------------------------------------------------------------------------------------------------------------------
@@ -130,6 +136,8 @@ private:
     /// @param[in] _shader the name of the shader to use when drawing
     //----------------------------------------------------------------------------------------------------------------------
     void drawScene(const std::string &_shader);
+
+    bool run = false;
 
 
 

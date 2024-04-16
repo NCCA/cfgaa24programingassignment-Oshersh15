@@ -1,11 +1,4 @@
-#include <QMouseEvent>
-#include <QGuiApplication>
-
-#include "NGLScene.h"
-#include <ngl/NGLInit.h>
-#include <ngl/VAOPrimitives.h>
-#include <ngl/ShaderLib.h>
-#include <iostream>
+#include "includes.h"
 
 NGLScene::NGLScene()
 {
@@ -18,12 +11,65 @@ NGLScene::~NGLScene()
   std::cout << "Shutting down NGL, removing VAO's and Shaders\n";
 }
 
+bool hasRun = false;
+QVector<QVector<int>> NGLScene::loadMaze()
+{
+    if (!hasRun) {
+        QImage image("/Desktop/CFGAA/VAOPrimitives/image/Maze.PNG");
+        if (image.isNull()) {
+            qDebug() << "Failed to load maze image.";
+            return QVector<QVector<int>>(0);
+        }
+        image = image.convertToFormat(QImage::Format_RGB32);
+        QVector<QVector<int>> mazeGrid(15, QVector<int>(15, 0));
+        // Calculate the size of each cell in the original image.
+        int cellWidth = image.width() / 15;
+        int cellHeight = image.height() / 15;
+
+        for (int gridY = 0; gridY < 15; ++gridY) {
+            QString row = "pixels: ";
+            for (int gridX = 0; gridX < 15; ++gridX) {
+                // Calculate the average color of the cell.
+                int blackPixelCount = 0;
+                for (int y = 0; y < cellHeight; ++y) {
+                    for (int x = 0; x < cellWidth; ++x) {
+                        int pixelX = gridX * cellWidth + x;
+                        int pixelY = (14 - gridY) * cellHeight + y;
+                        QRgb pixel = image.pixel(pixelX, pixelY); // Flip vertically
+                        if (qRed(pixel) == 0)  // Black pixel
+                        {
+                            blackPixelCount++;
+                        }
+                    }
+                }
+                // Determine if the cell is predominantly black or white.
+                int totalPixels = cellWidth * cellHeight;
+                if (blackPixelCount > totalPixels / 2)
+                {
+                    mazeGrid[gridY][gridX] = 1;  // Wall
+                    row += "1 ";  // Majority black, cube should be placed.
+                } else
+                {
+                    mazeGrid[gridY][gridX] = 0;  // Path
+                    row += "0 ";  // Majority white, cell is empty.
+                }
+            }
+            qDebug() << row;  // Output each grid row of the maze
+            qDebug() << mazeGrid;
+        }
+        hasRun = true;
+        return mazeGrid;
+    }
+    return QVector<QVector<int>>(0);
+}
+
 void NGLScene::resizeGL(int _w, int _h)
 {
   m_project = ngl::perspective(45.0f, static_cast<float>(_w) / _h, 0.05f, 350.0f);
   m_win.width = static_cast<int>(_w * devicePixelRatio());
   m_win.height = static_cast<int>(_h * devicePixelRatio());
 }
+
 constexpr auto shaderProgram = "PBR";
 void NGLScene::initializeGL()
 {
@@ -81,14 +127,14 @@ void NGLScene::initializeGL()
   ngl::ShaderLib::setUniform("roughness", 0.38f);
   ngl::ShaderLib::setUniform("ao", 0.2f);
 
-  ngl::VAOPrimitives::createSphere("sphere", 0.5f, 50);
+/*  ngl::VAOPrimitives::createSphere("sphere", 0.5f, 50);
 
   ngl::VAOPrimitives::createCylinder("cylinder", 0.5f, 1.4f, 40, 40);
 
   ngl::VAOPrimitives::createCone("cone", 0.5, 1.4f, 20, 20);
 
   ngl::VAOPrimitives::createDisk("disk", 0.8f, 120);
-  ngl::VAOPrimitives::createTorus("torus", 0.15f, 0.4f, 40, 40);
+  ngl::VAOPrimitives::createTorus("torus", 0.15f, 0.4f, 40, 40);*/
   ngl::VAOPrimitives::createTrianglePlane("plane", 14, 14, 80, 80, ngl::Vec3(0, 1, 0));
   // this timer is going to trigger an event every 40ms which will be processed in the
   //
@@ -116,143 +162,137 @@ void NGLScene::loadMatricesToShader()
   ngl::ShaderLib::setUniform("lightPosition", (m_mouseGlobalTX * m_lightPos).toVec3());
 }
 
-void NGLScene::drawScene(const std::string &_shader)
-{
-  ngl::ShaderLib::use(_shader);
-  // Rotation based on the mouse position for our global transform
-  ngl::Mat4 rotX = ngl::Mat4::rotateX(m_win.spinXFace);
-  ngl::Mat4 rotY = ngl::Mat4::rotateY(m_win.spinYFace);
-  // multiply the rotations
-  m_mouseGlobalTX = rotY * rotX;
-  // add the translations
-  m_mouseGlobalTX.m_m[3][0] = m_modelPos.m_x;
-  m_mouseGlobalTX.m_m[3][1] = m_modelPos.m_y;
-  m_mouseGlobalTX.m_m[3][2] = m_modelPos.m_z;
+std::vector<ngl::Transformation> cubeTransformations;
+void NGLScene::processArray() {
+    const int i = 5, j = 5;
+    int array[i][j] = {{1, 1, 1,1,1,},
+                       {1, 0, 0,1,0},
+                       {1, 0, 1,0,0},
+                       {0, 0, 0,0,0},
+                       {1, 0, 0,0,1}};
+    //float multiplier = 0.0;
+    auto mazeMatrix = NGLScene::loadMaze();
+    float baseX = 0.0f;
+    float baseZ = 3.0f;  // Starting Z position for the first row
+    float xSpacing = 0.5f;  // Horizontal spacing between cubes
+    float zSpacing = -0.5f;
+    for (int a = 0; a < mazeMatrix.size(); a++)
+    {
+        for (int b = 0; b < mazeMatrix.size(); b++)
+        {
+            //std::cout << "array[" << a << "][" << b << "] = " << array[a][b] << std::endl;
+            if (mazeMatrix[a][b] == 1)
+            {
+                std::cout << "wall" << std::endl;
+                ngl::Transformation transform;
+                float xPosition = baseX + (float)b * xSpacing;
+                float zPosition = baseZ + (float)a * zSpacing;
+                transform.setPosition(xPosition, 0.0f, zPosition);
+                transform.setScale(0.5f, 0.5f, 0.5f);
+                //multiplier += 0.5;
+                cubeTransformations.push_back(transform);
+            }// and before a pop
+            else
+            {
+                std::cout << "null" << std::endl;
+                //multiplier += 0.5;
+            }
+        }
 
-  m_transform.reset();
-  {
-    loadMatricesToShader();
-    ngl::VAOPrimitives::draw("teapot");
-  } // and before a pop
+    }
+}
 
-  m_transform.reset();
-  {
-    m_transform.setPosition(-3.0f, 0.0f, 0.0f);
-    loadMatricesToShader();
-    ngl::VAOPrimitives::draw("sphere");
-  } // and before a pop
+void NGLScene::renderMaze() {
+    for (const auto& transform : cubeTransformations) {
+        m_transform = transform;  // Assuming m_transform is used in your shader setup
+        loadMatricesToShader();
+        ngl::VAOPrimitives::draw("cube");
+    }
+}
 
-  m_transform.reset();
-  {
-    m_transform.setPosition(3.0f, 0.0f, 0.0f);
-    loadMatricesToShader();
-    ngl::VAOPrimitives::draw("cylinder");
-  } // and before a pop
+void NGLScene::drawScene(const std::string &_shader) {
+    ngl::ShaderLib::use(_shader);
+    // Rotation based on the mouse position for our global transform
+    ngl::Mat4 rotX = ngl::Mat4::rotateX(m_win.spinXFace);
+    ngl::Mat4 rotY = ngl::Mat4::rotateY(m_win.spinYFace);
+    // multiply the rotations
+    m_mouseGlobalTX = rotY * rotX;
+    // add the translations
+    m_mouseGlobalTX.m_m[3][0] = m_modelPos.m_x;
+    m_mouseGlobalTX.m_m[3][1] = m_modelPos.m_y;
+    m_mouseGlobalTX.m_m[3][2] = m_modelPos.m_z;
+    if (!run)
+    {
+        processArray();
+        run = true;
+    }
+    renderMaze();
 
-  m_transform.reset();
-  {
-    m_transform.setPosition(0.0f, 0.0f, 3.0f);
-    loadMatricesToShader();
-    ngl::VAOPrimitives::draw("cube");
-  } // and before a pop
 
-  m_transform.reset();
-  {
-    m_transform.setPosition(-3.0f, 0.0f, 3.0f);
-    loadMatricesToShader();
-    ngl::VAOPrimitives::draw("torus");
-  } // and before a pop
+    m_transform.reset();
+    {
+        m_transform.setPosition(3.5f, -0.5f, 0.0f);
+        loadMatricesToShader();
+        ngl::VAOPrimitives::draw("plane");
+    } // and before a pop
 
-  m_transform.reset();
-  {
-    m_transform.setPosition(3.0f, 0.5f, 3.0f);
-    loadMatricesToShader();
-    ngl::VAOPrimitives::draw("icosahedron");
-  } // and before a pop
+  //*auto mazeMatrix = NGLScene::loadMaze();
 
-  m_transform.reset();
+/*  for(int y = 0; y < mazeMatrix.size(); y++)
   {
-    m_transform.setPosition(0.0f, 0.0f, -3.0f);
-    loadMatricesToShader();
-    ngl::VAOPrimitives::draw("cone");
-  } // and before a pop
+      std::cout << mazeMatrix.size() << std::endl;
+      for (int x = 0; x < mazeMatrix.size(); x++)
+      {
+          if (mazeMatrix[y][x] == 1)
+          {
+              std::cout << "wall" << std::endl;
+          }
+          else
+          {
+              std::cout << "null" << std::endl;
+          }
+      }
+  }*/
 
-  m_transform.reset();
-  {
-    m_transform.setPosition(-3.0f, 0.5f, -3.0f);
-    loadMatricesToShader();
-    ngl::VAOPrimitives::draw("tetrahedron");
-  } // and before a pop
+    /*const int i=3, j=3;
+    int array[i][j] = {{1,1,1},
+                      {1,0,0},
+                      {1,0,1}};
+    if(!run)
+    {
+        for (int a = 0; a < 3; a++)
+        {
+            float multiplier = (float) a + 10;
+            for (int b = 0; b < 3; b++)
+            {
+                if (array[a][b] == 1)
+                {
+                    std::cout << "wall" << std::endl;
+                    m_transform.reset();
+                    {
+                        m_transform.setPosition(0.0f, 0.0f, 3.0f);
+                        m_transform.setScale(0.5f + multiplier, 0.5f, 0.5f);
+                        loadMatricesToShader();
+                        ngl::VAOPrimitives::draw("cube");
+                    }
+                }// and before a pop
+                else {
+                    std::cout << "null" << std::endl;
+                }
+            }
+        }
+    }*/
+  //float multiplier = (float)y * 2;
+/* should work!
+      m_transform.reset();
+      {
+          m_transform.setPosition(0.0f, 0.0f, 3.0f);
+          m_transform.setScale(0.5f, 0.5f, 0.5f);
+          loadMatricesToShader();
+          ngl::VAOPrimitives::draw("cube");
+      } // and before a pop
+*/
 
-  m_transform.reset();
-  {
-    m_transform.setPosition(3.0f, 0.5f, -3.0f);
-    loadMatricesToShader();
-    ngl::VAOPrimitives::draw("octahedron");
-  } // and before a pop
-
-  m_transform.reset();
-  {
-    m_transform.setPosition(0.0f, 0.5f, -6.0f);
-    loadMatricesToShader();
-    ngl::VAOPrimitives::draw("football");
-  } // and before a pop
-
-  m_transform.reset();
-  {
-    m_transform.setPosition(-3.0f, 0.5f, -6.0f);
-    m_transform.setRotation(0.0f, 180.0f, 0.0f);
-    loadMatricesToShader();
-    ngl::VAOPrimitives::draw("disk");
-  } // and before a pop
-
-  m_transform.reset();
-  {
-    m_transform.setPosition(3.0f, 0.5f, -6.0f);
-    loadMatricesToShader();
-    ngl::VAOPrimitives::draw("dodecahedron");
-  } // and before a pop
-
-  m_transform.reset();
-  {
-    m_transform.setPosition(1.0f, 0.35f, 1.0f);
-    m_transform.setScale(1.5f, 1.5f, 1.5f);
-    loadMatricesToShader();
-    ngl::VAOPrimitives::draw("troll");
-  } // and before a pop
-
-#ifdef ADDLARGEMODELS
-  m_transform.reset();
-  {
-    m_transform.setPosition(-1.0, -0.5, 1.0);
-    m_transform.setScale(0.1f, 0.1f, 0.1f);
-    loadMatricesToShader();
-    ngl::VAOPrimitives::draw("dragon");
-  } // and before a pop
-
-  m_transform.reset();
-  {
-    m_transform.setPosition(-2.5f, -0.5f, 1.0f);
-    m_transform.setScale(0.1f, 0.1f, 0.1f);
-    loadMatricesToShader();
-    ngl::VAOPrimitives::draw("buddah");
-  } // and before a pop
-
-  m_transform.reset();
-  {
-    m_transform.setPosition(2.5f, -0.5f, 1.0f);
-    m_transform.setScale(0.1f, 0.1f, 0.1f);
-    loadMatricesToShader();
-    ngl::VAOPrimitives::draw("bunny");
-  } // and before a pop
-#endif
-
-  m_transform.reset();
-  {
-    m_transform.setPosition(0.0f, -0.5f, 0.0f);
-    loadMatricesToShader();
-    ngl::VAOPrimitives::draw("plane");
-  } // and before a pop
 }
 
 void NGLScene::paintGL()
@@ -396,7 +436,7 @@ void NGLScene::updateLight()
 {
 
   // change the light angle
-  m_lightAngle += 0.1f;
+  m_lightAngle = 0.1f;
 
   // now set this value and load to the shader
   m_lightPos.set(ngl::Vec3(4.0 * cosf(m_lightAngle), 2.0f, 4.0f * sinf(m_lightAngle)));

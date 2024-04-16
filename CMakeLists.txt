@@ -10,9 +10,9 @@ if(NOT DEFINED CMAKE_TOOLCHAIN_FILE AND DEFINED ENV{CMAKE_TOOLCHAIN_FILE})
 endif()
 
 # Name of the project
-project(VAOPrimitivesBuild)
+project(cfgaa24programingassignment-Oshersh15Build)
 # This is the name of the Exe change this and it will change everywhere
-set(TargetName VAOPrimitives)
+set(TargetName cfgaa24programingassignment-Oshersh15)
 
 # This will include the file NGLConfig.cmake, you need to add the location to this either using
 # -DCMAKE_PREFIX_PATH=~/NGL or as a system environment variable. 

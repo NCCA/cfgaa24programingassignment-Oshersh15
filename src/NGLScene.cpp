@@ -15,7 +15,7 @@ bool hasRun = false;
 QVector<QVector<int>> NGLScene::loadMaze()
 {
     if (!hasRun) {
-        QImage image("/Desktop/CFGAA/VAOPrimitives/image/Maze.PNG");
+        QImage image("/home/s5301744/Desktop/cfgaa24programingassignment-Oshersh15/image");
         if (image.isNull()) {
             qDebug() << "Failed to load maze image.";
             return QVector<QVector<int>>(0);

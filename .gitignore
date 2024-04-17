@@ -1,4 +1,4 @@
-*.idea
+/.idea
 
 # Compiled Object files
 *.slo
@@ -22,7 +22,8 @@ Makefile
 *.lai
 *.la
 *.a
-*.lib
+*.libgit rm --cached -r .idea
+
 
 # Visual Studio Crap
 *.vcproj

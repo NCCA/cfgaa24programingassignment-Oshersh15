@@ -63,6 +63,16 @@ QVector<QVector<int>> NGLScene::loadMaze()
     return QVector<QVector<int>>(0);
 }
 
+void NGLScene::updateCameraPosition()
+{
+    float radYaw = ngl::radians(m_cameraYaw);
+    ngl::Vec3 forward(cos(radYaw), 0, sin(radYaw));
+    //ngl::Vec3 right = forward.cross(ngl::Vec3(0,1,0));
+
+    m_view = ngl::lookAt(m_cameraPosition, m_cameraPosition + forward, ngl::Vec3(0,1,0));
+    loadMatricesToShader();
+}
+
 void NGLScene::resizeGL(int _w, int _h)
 {
   m_project = ngl::perspective(45.0f, static_cast<float>(_w) / _h, 0.05f, 350.0f);
@@ -112,7 +122,10 @@ void NGLScene::initializeGL()
   // now load to our new camera
   m_view = ngl::lookAt(from, to, up);
   m_project = ngl::perspective(45.0f, 1024.0f/720.0f, 0.05f, 350.0f);
-
+//  m_camera.setView(ngl::Vec3(0.0f,2.0f,10.0f),
+//                   ngl::Vec3(0.0f,0.0f,0.0f),
+//                    ngl::Vec3(0.0f,1.0f,0.0f));
+//  m_camera.setPerspective(45.0f, 1024.0f / 720.0f,0.05f,350.0f);
   ngl::ShaderLib::setUniform("camPos", from);
   // now a light
   m_lightPos.set(0.0, 2.0f, 2.0f, 1.0f);
@@ -160,6 +173,10 @@ void NGLScene::loadMatricesToShader()
   ngl::ShaderLib::setUniformBuffer("TransformUBO", sizeof(transform), &t.MVP.m_00);
 
   ngl::ShaderLib::setUniform("lightPosition", (m_mouseGlobalTX * m_lightPos).toVec3());
+
+//  ngl::ShaderLib::use("PBR");
+//  ngl::Mat4 MVP = m_camera.getProjectionMatrix() * m_camera.getViewMatrix() * objectMatrix;
+//  ngl::ShaderLib::setUniform("MVP", MVP);
 }
 
 std::vector<ngl::Transformation> cubeTransformations;
@@ -328,6 +345,13 @@ void NGLScene::wheelEvent(QWheelEvent *_event)
 
 void NGLScene::keyPressEvent(QKeyEvent *_event)
 {
+    qDebug() << "Key pressed:" << _event->key();
+   float moveSpeed = 0.1f;
+   float rotateSpeed = 5.0f;
+
+   float radYaw = ngl::radians(m_cameraYaw);
+   ngl::Vec3 forward(cos(radYaw), 0, sin(radYaw));
+   ngl::Vec3 right = forward.cross(ngl::Vec3(0,1,0));
   // this method is called every time the main window recives a key event.
   // we then switch on the key value and set the camera in the GLWindow
   switch (_event->key())
@@ -338,12 +362,22 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     break;
   // turn on wirframe rendering
   case Qt::Key_W:
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+      m_cameraPosition += forward * moveSpeed;
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     break;
   // turn off wire frame
   case Qt::Key_S:
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+      m_cameraPosition -= forward * moveSpeed;
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     break;
+  case Qt::Key_Up:
+      m_cameraPosition -= right * moveSpeed;
+  case Qt::Key_Down:
+      m_cameraPosition += right * moveSpeed;
+  case Qt::Key_Left:
+      m_cameraYaw -= rotateSpeed;
+  case Qt::Key_Right:
+      m_cameraYaw += rotateSpeed;
   // show full screen
   case Qt::Key_F:
     showFullScreen();
@@ -359,9 +393,11 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     break;
   }
   // finally update the GLWindow and re-draw
-  if (isExposed())
-    update();
+//  if (isExposed())
+//    update();
+  updateCameraPosition();
 }
+
 
 void NGLScene::updateLight()
 {
@@ -383,3 +419,4 @@ void NGLScene::timerEvent(QTimerEvent *_event)
   // re-draw GL
   update();
 }
+

@@ -5,6 +5,7 @@
 #include "WindowParams.h"
 #include <QOpenGLWindow>
 #include <memory>
+#include "includes.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 /// @file NGLScene.h
@@ -138,6 +139,13 @@ private:
     void drawScene(const std::string &_shader);
 
     bool run = false;
+
+    void updateCameraPosition();
+
+    ngl::Vec3 m_cameraPosition = ngl::Vec3(0.0f,0.5f,10.0f);
+    float m_cameraYaw = 0.0f; //Horizontal angle
+    float m_cameraPitch = 0.0f; //Vertical angle
+    QVector<QVector<int>> m_mazeMatrix;
 
 
 

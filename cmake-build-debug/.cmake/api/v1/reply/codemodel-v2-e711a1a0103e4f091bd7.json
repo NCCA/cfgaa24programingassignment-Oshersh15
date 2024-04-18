@@ -1,0 +1,87 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "VAOPrimitivesBuild",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "VAOPrimitives::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-VAOPrimitives-Debug-2f9495e27b0c3d4eab25.json",
+					"name" : "VAOPrimitives",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "VAOPrimitivesCopyShaders::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-VAOPrimitivesCopyShaders-Debug-222d91476261b7b2612f.json",
+					"name" : "VAOPrimitivesCopyShaders",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "VAOPrimitives_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-VAOPrimitives_autogen-Debug-1fd4f2c1b925a2bd8331.json",
+					"name" : "VAOPrimitives_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "VAOPrimitives_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-VAOPrimitives_autogen_timestamp_deps-Debug-e1d22de33f462de2ceba.json",
+					"name" : "VAOPrimitives_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/s5301744/repos/cfgaa24programingassignment-Oshersh15/cmake-build-debug",
+		"source" : "/home/s5301744/repos/cfgaa24programingassignment-Oshersh15"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 5
+	}
+}

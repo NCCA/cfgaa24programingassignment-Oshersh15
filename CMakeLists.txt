@@ -9,10 +9,10 @@ cmake_minimum_required(VERSION 3.12)
 # Linux / Mac mkdir build; cd build; cmake -DCMAKE_PREFIX_PATH~/NGL/ .. ; make
 #-------------------------------------------------------------------------------------------
 # Directly set the path to the vcpkg toolchain file
-set(CMAKE_TOOLCHAIN_FILE "/Users/osher/vcpkg/scripts/buildsystems/vcpkg.cmake")
+#set(CMAKE_TOOLCHAIN_FILE "/Users/osher/vcpkg/scripts/buildsystems/vcpkg.cmake")
 
 # Specify the path to NGL. This helps find_package locate it
-list(APPEND CMAKE_PREFIX_PATH "/Users/osher/NGL")
+#list(APPEND CMAKE_PREFIX_PATH "/Users/osher/NGL")
 
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE AND DEFINED ENV{CMAKE_TOOLCHAIN_FILE})
    set(CMAKE_TOOLCHAIN_FILE $ENV{CMAKE_TOOLCHAIN_FILE})

@@ -20,8 +20,8 @@
 
 - **Current status and next steps:**
 <div style="display: flex; justify-content: space-around; align-items: center;">
-  <img src="Users/osher/repos/Projects/VAOPrimitives/image/Maze.PNG" alt="Maze Image 1" width="300"/>
-  <img src="Users/osher/repos/cfgaa24programingassignment-Oshersh15/maze-demo.PNG" alt="Maze Image 2" width="300"/>
+  <img src="https://github.com/NCCA/cfgaa24programingassignment-Oshersh15/blob/main/image/Maze.png" alt="Maze Image 1" width="300"/>
+  <img src="https://github.com/NCCA/cfgaa24programingassignment-Oshersh15/blob/main/image/mazeScreenshot.png" alt="Maze Image 2" width="300"/>
 </div>
  The structure of the maze has been successfully implemented, with visual representation aligning with the conceptual design. Moving forward, the next phase of development will concentrate on enhancing user interaction by implementing camera movement controls and integrating collision detection.  
 

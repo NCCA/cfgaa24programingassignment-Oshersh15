@@ -11,7 +11,7 @@
 
 
 - **Project overview and process:**
-    - **Starting point** - Utilised the ![alt tag](https://github.com/NCCA/VAOPrimitives/tree/main) repository as the foundational codebase. This repository provides a simple scene using all of the built in VAO primitives. The primary goal was to adapt this framework to create a more complex 3D maze.
+    - **Starting point** - Utilised the (https://github.com/NCCA/VAOPrimitives/tree/main) repository as the foundational codebase. This repository provides a simple scene using all of the built in VAO primitives. The primary goal was to adapt this framework to create a more complex 3D maze.
     - **Image processing for maze creation** - To transform a complex image into a 3D maze, the project employs a method that interprets the image as overlaying a 15x15 grid, dividing it into 225 cells. Each cell's dimensions are calculated by proportionally dividing the image's dimensions. The image is then processed cell by cell to count the number of black pixels, determining whether each cell represents a wall (1) or a path (0) based on the majority color. This binary grid data is subsequently used to guide the automated placement of cubes in the 3D scene, creating a navigable maze that corresponds to the original image's layout.
     - **Array mapping** - A 2D array was created corresponding to the grid, where each cell was assigned a value based on the color detected in the image processing step:
                             - **1 (Wall)**: Indicates a black-colored area, suggesting the presence of a wall.

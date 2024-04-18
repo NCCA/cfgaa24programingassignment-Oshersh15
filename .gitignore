@@ -1,5 +1,6 @@
 /.idea
 
+
 # Compiled Object files
 *.slo
 *.lo
@@ -55,5 +56,6 @@ CMakeScripts
 Makefile
 cmake_install.cmake
 install_manifest.txt
+cmake-build-debug
 
 

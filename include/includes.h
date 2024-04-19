@@ -20,6 +20,5 @@
 #include <QDir>
 #include <QVector>
 
-#include "Camera.h"
 #include <math.h>
 

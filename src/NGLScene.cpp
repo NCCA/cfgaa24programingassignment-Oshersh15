@@ -3,7 +3,10 @@
 NGLScene::NGLScene()
 {
   setTitle("VAOPrimitives Demo");
-  m_animate = true;
+//  m_animate = true;
+//  m_cameraPosition = ngl::Vec3(0.0f,2.0f,10.0f); //starting camera position
+//  m_cameraYaw = 0.0f; //facing forward
+//  updateCameraPosition();
 }
 
 NGLScene::~NGLScene()
@@ -67,10 +70,11 @@ void NGLScene::updateCameraPosition()
 {
     float radYaw = ngl::radians(m_cameraYaw);
     m_cameraForward = ngl::Vec3(cos(radYaw), 0, sin(radYaw));
-    ngl::Vec3 forward(cos(radYaw), 0, sin(radYaw));
+    m_cameraRight = m_cameraForward.cross(ngl::Vec3(0,1,0));
+    //ngl::Vec3 forward(cos(radYaw), 0, sin(radYaw));
     //ngl::Vec3 right = forward.cross(ngl::Vec3(0,1,0));
 
-    m_view = ngl::lookAt(m_cameraPosition, m_cameraPosition + forward, ngl::Vec3(0,1,0));
+    m_view = ngl::lookAt(m_cameraPosition, m_cameraPosition + m_cameraForward, ngl::Vec3(0,1,0));
     loadMatricesToShader();
 }
 
@@ -351,9 +355,9 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
    float rotateSpeed = 5.0f;
    //bool isFullScreen = false;
 
-   float radYaw = ngl::radians(m_cameraYaw);
-   ngl::Vec3 forward(cos(radYaw), 0, sin(radYaw));
-   ngl::Vec3 right = forward.cross(ngl::Vec3(0,1,0));
+//   float radYaw = ngl::radians(m_cameraYaw);
+//   ngl::Vec3 forward(cos(radYaw), 0, sin(radYaw));
+//   ngl::Vec3 right = forward.cross(ngl::Vec3(0,1,0));
   // this method is called every time the main window recives a key event.
   // we then switch on the key value and set the camera in the GLWindow
   switch (_event->key())
@@ -406,9 +410,12 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     break;
   }
   // finally update the GLWindow and re-draw
-  //if (isExposed())
+  if (isExposed())
+  {
+      update();
+  }
   updateCameraPosition();
-  update();
+
 }
 
 

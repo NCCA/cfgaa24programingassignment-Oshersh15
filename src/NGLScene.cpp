@@ -66,6 +66,7 @@ QVector<QVector<int>> NGLScene::loadMaze()
 void NGLScene::updateCameraPosition()
 {
     float radYaw = ngl::radians(m_cameraYaw);
+    m_cameraForward = ngl::Vec3(cos(radYaw), 0, sin(radYaw));
     ngl::Vec3 forward(cos(radYaw), 0, sin(radYaw));
     //ngl::Vec3 right = forward.cross(ngl::Vec3(0,1,0));
 
@@ -345,9 +346,10 @@ void NGLScene::wheelEvent(QWheelEvent *_event)
 
 void NGLScene::keyPressEvent(QKeyEvent *_event)
 {
-    qDebug() << "Key pressed:" << _event->key();
+    //qDebug() << "Key pressed:" << _event->key();
    float moveSpeed = 0.1f;
    float rotateSpeed = 5.0f;
+   //bool isFullScreen = false;
 
    float radYaw = ngl::radians(m_cameraYaw);
    ngl::Vec3 forward(cos(radYaw), 0, sin(radYaw));
@@ -361,31 +363,42 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     QGuiApplication::exit(EXIT_SUCCESS);
     break;
   // turn on wirframe rendering
-  case Qt::Key_W:
-      m_cameraPosition += forward * moveSpeed;
+  case Qt::Key_Up:
+      m_cameraPosition += m_cameraForward * moveSpeed;
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     break;
   // turn off wire frame
-  case Qt::Key_S:
-      m_cameraPosition -= forward * moveSpeed;
+  case Qt::Key_Down:
+      m_cameraPosition -= m_cameraForward * moveSpeed;
     //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     break;
-  case Qt::Key_Up:
-      m_cameraPosition -= right * moveSpeed;
-  case Qt::Key_Down:
-      m_cameraPosition += right * moveSpeed;
   case Qt::Key_Left:
-      m_cameraYaw -= rotateSpeed;
+      m_cameraPosition -= m_cameraRight * moveSpeed;
+      break;
   case Qt::Key_Right:
+      m_cameraPosition += m_cameraRight * moveSpeed;
+      break;
+  case Qt::Key_A:
+      m_cameraYaw -= rotateSpeed;
+      break;
+  case Qt::Key_S:
       m_cameraYaw += rotateSpeed;
+      break;
   // show full screen
   case Qt::Key_F:
-    showFullScreen();
+      if (isFullScreen) {
+          showNormal();
+          isFullScreen = !isFullScreen;
+      }
+      else {
+          showFullScreen();
+          isFullScreen = !isFullScreen;
+      }
     break;
   // show windowed
-  case Qt::Key_N:
-    showNormal();
-    break;
+//  case Qt::Key_N:
+//    showNormal();
+//    break;
   case Qt::Key_Space:
     m_animate ^= true;
     break;
@@ -393,9 +406,9 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     break;
   }
   // finally update the GLWindow and re-draw
-//  if (isExposed())
-//    update();
+  //if (isExposed())
   updateCameraPosition();
+  update();
 }
 
 
@@ -406,7 +419,7 @@ void NGLScene::updateLight()
   m_lightAngle = 0.1f;
 
   // now set this value and load to the shader
-  m_lightPos.set(ngl::Vec3(4.0 * cosf(m_lightAngle), 2.0f, 4.0f * sinf(m_lightAngle)));
+  m_lightPos.set(ngl::Vec3(4.0f * cosf(m_lightAngle), 2.0f, 4.0f * sinf(m_lightAngle)));
 }
 
 void NGLScene::timerEvent(QTimerEvent *_event)

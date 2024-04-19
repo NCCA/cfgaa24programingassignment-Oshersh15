@@ -3,7 +3,7 @@
 NGLScene::NGLScene()
 {
   setTitle("VAOPrimitives Demo");
-//  m_animate = true;
+  m_animate = true;
 //  m_cameraPosition = ngl::Vec3(0.0f,2.0f,10.0f); //starting camera position
 //  m_cameraYaw = 0.0f; //facing forward
 //  updateCameraPosition();
@@ -92,6 +92,9 @@ void NGLScene::initializeGL()
   // be done once we have a valid GL context but before we call any GL commands. If we dont do
   // this everything will crash
   ngl::NGLInit::initialize();
+  m_cameraPosition = ngl::Vec3(0.0f,2.0f,10.0f); //starting camera position
+  m_cameraYaw = 0.0f; //facing forward
+  updateCameraPosition();
   glClearColor(0.4f, 0.4f, 0.4f, 1.0f); // Grey Background
   // enable depth testing for drawing
   glEnable(GL_DEPTH_TEST);

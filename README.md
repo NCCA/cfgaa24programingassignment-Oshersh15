@@ -23,7 +23,11 @@
   <img src="https://github.com/NCCA/cfgaa24programingassignment-Oshersh15/blob/main/image/Maze.png" alt="Maze Image 1" width="300"/>
   <img src="https://github.com/NCCA/cfgaa24programingassignment-Oshersh15/blob/main/image/mazeScreenshot.png" alt="Maze Image 2" width="300"/>
 </div>
- The structure of the maze has been successfully implemented, with visual representation aligning with the conceptual design. Moving forward, the next phase of development will concentrate on enhancing user interaction by implementing camera movement controls and integrating collision detection.  
+ The structure of the maze has been successfully implemented, with visual representation aligning with the conceptual design. 
+ 
+ Continuing working on the project, I have implemented camera movement controlled by keys and set the initial camera position in the most central spot without a wall.
+
+ Moving forward, the next phase of development will concentrate on integrating collision detection and making key control better (I want moving to the sides to make a 90 degrees rotation towards the side selected).  
 
 
 

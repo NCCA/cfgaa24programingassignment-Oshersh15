@@ -3,10 +3,7 @@
 NGLScene::NGLScene()
 {
   setTitle("VAOPrimitives Demo");
-  m_animate = true;
-//  m_cameraPosition = ngl::Vec3(0.0f,2.0f,10.0f); //starting camera position
-//  m_cameraYaw = 0.0f; //facing forward
-//  updateCameraPosition();
+  //m_animate = true;
 }
 
 NGLScene::~NGLScene()
@@ -24,21 +21,26 @@ QVector<QVector<int>> NGLScene::loadMaze()
             return QVector<QVector<int>>(0);
         }
         image = image.convertToFormat(QImage::Format_RGB32);
-        QVector<QVector<int>> mazeGrid(15, QVector<int>(15, 0));
+        int mazeSize = 15;
+        QVector<QVector<int>> mazeGrid(mazeSize, QVector<int>(mazeSize, 0));
         // Calculate the size of each cell in the original image.
-        int cellWidth = image.width() / 15;
-        int cellHeight = image.height() / 15;
+        int cellWidth = image.width() / mazeSize;
+        int cellHeight = image.height() / mazeSize;
 
-        for (int gridY = 0; gridY < 15; ++gridY) {
+        int midIndex = mazeSize / 2; //centre index for the grid
+        bool foundStart = false;
+
+        for (int gridY = 0; gridY < mazeSize; ++gridY) {
             QString row = "pixels: ";
-            for (int gridX = 0; gridX < 15; ++gridX) {
+            for (int gridX = 0; gridX < mazeSize; ++gridX) {
                 // Calculate the average color of the cell.
                 int blackPixelCount = 0;
                 for (int y = 0; y < cellHeight; ++y) {
                     for (int x = 0; x < cellWidth; ++x) {
-                        int pixelX = gridX * cellWidth + x;
-                        int pixelY = (14 - gridY) * cellHeight + y;
-                        QRgb pixel = image.pixel(pixelX, pixelY); // Flip vertically
+//                        int pixelX = gridX * cellWidth + x;
+//                        int pixelY = (14 - gridY) * cellHeight + y;
+//                        QRgb pixel = image.pixel(pixelX, pixelY); // Flip vertically
+                        QRgb pixel = image.pixel(gridX * cellWidth + x, (mazeSize - 1 - gridY) * cellHeight + y);
                         if (qRed(pixel) == 0)  // Black pixel
                         {
                             blackPixelCount++;
@@ -54,11 +56,18 @@ QVector<QVector<int>> NGLScene::loadMaze()
                 } else
                 {
                     mazeGrid[gridY][gridX] = 0;  // Path
-                    row += "0 ";  // Majority white, cell is empty.
+                    row += "0 "; // Majority white, cell is empty.
+                    if (!foundStart && abs(gridX - midIndex) <= 1 && abs(gridY-midIndex) <= 1)
+                    {
+                        mazeGrid[gridY][gridX] = 2; //mark the start position
+                        row += "2 ";
+                        foundStart = true;
+                    }
                 }
             }
             qDebug() << row;  // Output each grid row of the maze
             qDebug() << mazeGrid;
+            qDebug() << midIndex;
         }
         hasRun = true;
         return mazeGrid;
@@ -92,7 +101,7 @@ void NGLScene::initializeGL()
   // be done once we have a valid GL context but before we call any GL commands. If we dont do
   // this everything will crash
   ngl::NGLInit::initialize();
-  m_cameraPosition = ngl::Vec3(0.0f,2.0f,10.0f); //starting camera position
+  m_cameraPosition = ngl::Vec3(0.0f,0.0f,0.0f); //starting camera position
   m_cameraYaw = 0.0f; //facing forward
   updateCameraPosition();
   glClearColor(0.4f, 0.4f, 0.4f, 1.0f); // Grey Background
@@ -124,9 +133,9 @@ void NGLScene::initializeGL()
   // and make it active ready to load values
   ngl::ShaderLib::use(shaderProgram);
   // We now create our view matrix for a static camera
-  ngl::Vec3 from(0.0f, 2.0f, 10.0f);
+  ngl::Vec3 from(0.0f, 0.0f, 0.0f);
   ngl::Vec3 to(0.0f, 0.0f, 0.0f);
-  ngl::Vec3 up(0.0f, 1.0f, 0.0f);
+  ngl::Vec3 up(0.0f, 2.0f, 0.0f);
   // now load to our new camera
   m_view = ngl::lookAt(from, to, up);
   m_project = ngl::perspective(45.0f, 1024.0f/720.0f, 0.05f, 350.0f);
@@ -194,27 +203,40 @@ void NGLScene::processArray() {
     float baseZ = 3.0f;  // Starting Z position for the first row
     float xSpacing = 0.5f;  // Horizontal spacing between cubes
     float zSpacing = -0.5f;
+//    int centre = mazeMatrix.size() / 2 + 1;
+//    ngl::Vec3 startingPosition;
+//    bool foundStartingPosition = false;
+    //qDebug() << mazeMatrix;
     for (int a = 0; a < mazeMatrix.size(); a++)
     {
         for (int b = 0; b < mazeMatrix.size(); b++)
         {
+            ngl::Transformation transform;
+            float xPosition = baseX + (float)b * xSpacing;
+            float zPosition = baseZ + (float)a * zSpacing;
+            transform.setPosition(xPosition, 0.0f, zPosition);
+            transform.setScale(0.5f, 0.5f, 0.5f);
             if (mazeMatrix[a][b] == 1)
             {
                 std::cout << "wall" << std::endl;
-                ngl::Transformation transform;
-                float xPosition = baseX + (float)b * xSpacing;
-                float zPosition = baseZ + (float)a * zSpacing;
-                transform.setPosition(xPosition, 0.0f, zPosition);
-                transform.setScale(0.5f, 0.5f, 0.5f);
                 cubeTransformations.push_back(transform);
             }// and before a pop
+            else if (mazeMatrix[a][b] == 2)
+            {
+                std::cout << "Starting position at" << b << " , " << a << std::endl;
+                m_cameraPosition = ngl::Vec3(xPosition, 0.0f, zPosition);
+                updateCameraPosition();
+            }
             else
             {
-                std::cout << "null" << std::endl;
+                    std::cout << "null" << std::endl;
             }
         }
-
     }
+//    if (foundStartingPosition)
+//    {
+//        updateCameraPosition();
+//    }
 }
 
 void NGLScene::renderMaze() {

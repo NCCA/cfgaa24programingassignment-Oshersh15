@@ -1,0 +1,7 @@
+# ninja log v5
+10	33	0	CMakeFiles/VAOPrimitivesCopyShaders	128e308cbd600d19
+33	80	1713437079	VAOPrimitives_autogen/timestamp	4e3446949ba53dce
+80	99	1713437079	CMakeFiles/VAOPrimitives.dir/VAOPrimitives_autogen/mocs_compilation.cpp.o	8890030c4677f941
+80	947	1713437080	CMakeFiles/VAOPrimitives.dir/src/main.cpp.o	9adb0dffb9265b61
+80	1100	1713437080	CMakeFiles/VAOPrimitives.dir/src/NGLScene.cpp.o	2c3248e7b599dd38
+1100	14871	1713437094	VAOPrimitives	4db785571f90a109

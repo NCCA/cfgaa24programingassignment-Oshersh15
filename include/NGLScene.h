@@ -51,6 +51,9 @@ class NGLScene : public QOpenGLWindow
     void processArray();
     void renderMaze();
     bool isFullScreen = false;
+    bool canMove(const ngl::Vec3 &potentialPosition);
+
+
 
 
 
@@ -152,6 +155,7 @@ private:
     float m_cameraYaw;
     //float m_cameraPitch = 0.0f; //Vertical angle
     QVector<QVector<int>> m_mazeMatrix;
+    QVector<QVector<int>> mazeGrid;
 
 
 

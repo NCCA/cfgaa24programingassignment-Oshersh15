@@ -133,7 +133,7 @@ void NGLScene::initializeGL()
   // and make it active ready to load values
   ngl::ShaderLib::use(shaderProgram);
   // We now create our view matrix for a static camera
-  ngl::Vec3 from(0.0f, 0.0f, 0.0f);
+  ngl::Vec3 from(00.0f, 0.0f, 0.0f);
   ngl::Vec3 to(0.0f, 0.0f, 0.0f);
   ngl::Vec3 up(0.0f, 2.0f, 0.0f);
   // now load to our new camera
@@ -224,8 +224,13 @@ void NGLScene::processArray() {
             else if (mazeMatrix[a][b] == 2)
             {
                 std::cout << "Starting position at" << b << " , " << a << std::endl;
-                m_cameraPosition = ngl::Vec3(xPosition, 0.0f, zPosition);
+                m_cameraPosition = ngl::Vec3(xPosition, 0.5, zPosition); //y is currently changed for testing convenience - supposed to be 0.0f
                 updateCameraPosition();
+
+                ngl::Transformation transform;
+                transform.setPosition(xPosition, 0.0f, zPosition);
+                transform.setScale(0.2f, 0.2f, 0.2f);
+                cubeTransformations.push_back(transform);
             }
             else
             {
@@ -267,7 +272,7 @@ void NGLScene::drawScene(const std::string &_shader) {
 
     m_transform.reset();
     {
-        m_transform.setPosition(3.5f, -0.5f, 0.0f);
+        m_transform.setPosition(3.5f, -0.25f, 0.0f);
         loadMatricesToShader();
         ngl::VAOPrimitives::draw("plane");
     } // and before a pop
@@ -378,11 +383,7 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     //qDebug() << "Key pressed:" << _event->key();
    float moveSpeed = 0.1f;
    float rotateSpeed = 5.0f;
-   //bool isFullScreen = false;
 
-//   float radYaw = ngl::radians(m_cameraYaw);
-//   ngl::Vec3 forward(cos(radYaw), 0, sin(radYaw));
-//   ngl::Vec3 right = forward.cross(ngl::Vec3(0,1,0));
   // this method is called every time the main window recives a key event.
   // we then switch on the key value and set the camera in the GLWindow
   switch (_event->key())
@@ -441,6 +442,17 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
   }
   updateCameraPosition();
 
+}
+
+bool NGLScene::canMove(const ngl::Vec3 &potentialPosition)
+{
+    int gridX = static_cast<int>(floor((potentialPosition.m_x / 0.5f) + 7.5f));
+    int gridZ = static_cast<int>(floor((potentialPosition.m_z / 0.5f) + 7.5f));
+
+    if(gridX < 0 || gridX >= mazeGrid.size() || gridZ < 0 || gridZ >= mazeGrid[0].size())
+        return false;
+
+    return mazeGrid[gridZ][gridX] == 0;
 }
 
 

@@ -25,9 +25,9 @@
 </div>
  The structure of the maze has been successfully implemented, with visual representation aligning with the conceptual design. 
  
- Continuing working on the project, I have implemented camera movement controlled by keys and set the initial camera position in the most central spot without a wall.
+ Continuing working on the project, I have implemented camera movement controlled by keys and set the initial camera position in the most central spot without a wall. - I am currently struggling with collision detection.
 
- Moving forward, the next phase of development will concentrate on integrating collision detection and making key control better (I want moving to the sides to make a 90 degrees rotation towards the side selected).  
+ Moving forward, the next phase of development will concentrate on integrating collision detection and making key control better (I want moving to the sides to make a 90 degrees rotation towards the side selected). 
 
 
 

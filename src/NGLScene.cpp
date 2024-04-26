@@ -165,7 +165,7 @@ void NGLScene::initializeGL()
 
   ngl::VAOPrimitives::createDisk("disk", 0.8f, 120);
   ngl::VAOPrimitives::createTorus("torus", 0.15f, 0.4f, 40, 40);*/
-  ngl::VAOPrimitives::createTrianglePlane("plane", 14, 14, 80, 80, ngl::Vec3(0, 1, 0));
+  ngl::VAOPrimitives::createTrianglePlane("plane", 7.5, 7.5, 80, 80, ngl::Vec3(0, 1, 0));
   // this timer is going to trigger an event every 40ms which will be processed in the
   //
   m_lightTimer = startTimer(40);
@@ -200,9 +200,11 @@ std::vector<ngl::Transformation> cubeTransformations;
 void NGLScene::processArray() {
     auto mazeMatrix = NGLScene::loadMaze();
     float baseX = 0.0f;
-    float baseZ = 3.0f;  // Starting Z position for the first row
+    float baseZ = 3.5f;  // Starting Z position for the first row
     float xSpacing = 0.5f;  // Horizontal spacing between cubes
     float zSpacing = -0.5f;
+//    int m_cameraGridX;
+//    int m_cameraGridY;
 //    int centre = mazeMatrix.size() / 2 + 1;
 //    ngl::Vec3 startingPosition;
 //    bool foundStartingPosition = false;
@@ -218,12 +220,13 @@ void NGLScene::processArray() {
             transform.setScale(0.5f, 0.5f, 0.5f);
             if (mazeMatrix[a][b] == 1)
             {
-                std::cout << "wall" << std::endl;
+                std::cout << "[" << a << "][" << b << "] is wall" << std::endl;
+                //std::cout << "wall" << std::endl;
                 cubeTransformations.push_back(transform);
             }// and before a pop
             else if (mazeMatrix[a][b] == 2)
             {
-                std::cout << "Starting position at" << b << " , " << a << std::endl;
+                std::cout << "Starting position at" << a << " , " << b << std::endl;
                 m_cameraPosition = ngl::Vec3(xPosition, 0.5, zPosition); //y is currently changed for testing convenience - supposed to be 0.0f
                 updateCameraPosition();
 
@@ -234,7 +237,8 @@ void NGLScene::processArray() {
             }
             else
             {
-                    std::cout << "null" << std::endl;
+                    //std::cout << "null" << std::endl;
+                    std::cout << "[" << a << "][" << b << "] is path" << std::endl;
             }
         }
     }
@@ -383,6 +387,13 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     //qDebug() << "Key pressed:" << _event->key();
    float moveSpeed = 0.1f;
    float rotateSpeed = 5.0f;
+   int dx = 0;
+   int dy = 0;
+   int cameraGridX = 7;
+   int cameraGridY = 6;
+//   int gridX = m_cameraPosition.m_x / 0.5f + 7.5f;
+//   int gridZ = m_cameraPosition.m_z / 0.5f + 7.5f;
+   auto mazeMatrix = NGLScene::loadMaze();
 
   // this method is called every time the main window recives a key event.
   // we then switch on the key value and set the camera in the GLWindow
@@ -394,19 +405,28 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     break;
   // turn on wirframe rendering
   case Qt::Key_Up:
+//      if(mazeGrid[gridZ+1][gridX] == 1)
+//      {
+//          m_cameraPosition += m_cameraForward * moveSpeed;
+//          gridZ--;
+//      }
       m_cameraPosition += m_cameraForward * moveSpeed;
+      dy = - 1;
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     break;
   // turn off wire frame
   case Qt::Key_Down:
       m_cameraPosition -= m_cameraForward * moveSpeed;
+      dy = 1;
     //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     break;
   case Qt::Key_Left:
       m_cameraPosition -= m_cameraRight * moveSpeed;
+      dx = - 1;
       break;
   case Qt::Key_Right:
       m_cameraPosition += m_cameraRight * moveSpeed;
+      dx = 1;
       break;
   case Qt::Key_A:
       m_cameraYaw -= rotateSpeed;
@@ -435,11 +455,39 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
   default:
     break;
   }
+
+//  int newGridX = cameraGridX + dx;
+//  int newGridY = cameraGridY + dy;
+//
+//  if(newGridX >= 0 && newGridX < mazeMatrix[0].size() && newGridY >= 0 && newGridY < mazeMatrix.size() && mazeMatrix[newGridY][newGridX] == 0)
+//  {
+//      mazeMatrix[cameraGridY][cameraGridX] = 0;
+//      mazeMatrix[newGridY][newGridX] = 2;
+//      cameraGridX = newGridX;
+//      cameraGridY = newGridY;
+//      std::cout << "location is [" << cameraGridY << "][" << cameraGridX << "]" << std::endl;
+//
+//  }
+
+//  int newX = m_cameraGridX + dx;
+//  int newY = m_cameraGridY + dy;
+
+
+//  if(newX >= 0 && newX <mazeGrid.size() && newY >= 0 && newY < mazeGrid.size() && mazeGrid[newY][newX] == 0)
+//  {
+//      mazeGrid[m_cameraGridY][m_cameraGridX] = 0;
+//
+//      m_cameraGridX = newX;
+//      m_cameraGridY = newY;
+//      mazeGrid[m_cameraGridY][m_cameraGridX] = 2;
+//  }
   // finally update the GLWindow and re-draw
-  if (isExposed())
-  {
-      update();
-  }
+//  if (isExposed())
+//  {
+//      update();
+//  }
+ // std::cout << "current position:" << gridZ << " , " << gridX << std::endl;
+  update();
   updateCameraPosition();
 
 }

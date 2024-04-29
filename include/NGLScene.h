@@ -46,12 +46,14 @@ class NGLScene : public QOpenGLWindow
     //----------------------------------------------------------------------------------------------------------------------
     void resizeGL(int _w, int _h) override;
 
-    QVector<QVector<int>> loadMaze();
+    //QVector<QVector<int>> loadMaze();
+    void loadMaze();
 
     void processArray();
     void renderMaze();
     bool isFullScreen = false;
     bool canMove(const ngl::Vec3 &potentialPosition);
+    void printMazeGrid();
 
 
 

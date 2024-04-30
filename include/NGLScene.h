@@ -146,7 +146,7 @@ private:
     bool run = false;
 
     void updateCameraPosition();
-    
+
     ngl::Vec3 m_cameraPosition;
     ngl::Vec3 m_cameraForward;
     ngl::Vec3 m_cameraRight;

@@ -79,7 +79,8 @@ void NGLScene::loadMaze()
 void NGLScene::updateCameraPosition()
 {
     float radYaw = ngl::radians(m_cameraYaw);
-    m_cameraForward = ngl::Vec3(cos(radYaw), 0, sin(radYaw));
+//    m_cameraForward = ngl::Vec3(cos(radYaw), 0, sin(radYaw));
+    m_cameraForward = ngl::Vec3(1, 0, 0); //forward
     m_cameraRight = m_cameraForward.cross(ngl::Vec3(0,1,0));
 
     m_view = ngl::lookAt(m_cameraPosition, m_cameraPosition + m_cameraForward, ngl::Vec3(0,1,0));
@@ -164,7 +165,7 @@ void NGLScene::initializeGL()
 
   ngl::VAOPrimitives::createDisk("disk", 0.8f, 120);
   ngl::VAOPrimitives::createTorus("torus", 0.15f, 0.4f, 40, 40);*/
-  ngl::VAOPrimitives::createTrianglePlane("plane", 7.5, 7.5, 80, 80, ngl::Vec3(0, 1, 0));
+  ngl::VAOPrimitives::createTrianglePlane("plane", 7.5, 7.5, 80, 80, ngl::Vec3(0.86f, 0.69f, 0.98f));
   // this timer is going to trigger an event every 40ms which will be processed in the
   //
   m_lightTimer = startTimer(40);
@@ -231,7 +232,7 @@ void NGLScene::processArray() {
                 cameraGridY = b;
                 ngl::Transformation transform;
                 transform.setPosition(xPosition, 0.0f, zPosition);
-                transform.setScale(0.2f, 0.2f, 0.2f);
+                transform.setScale(0.3f, 0.3f, 0.3f);
                 cubeTransformations.push_back(transform);
             }
             else
@@ -450,11 +451,9 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
 
   if(mazeGrid[cameraGridX + dx][cameraGridY + dy] == 0)
   {
-      int newX = cameraGridX + dx;
-      int newY = cameraGridY + dy;
       mazeGrid[cameraGridX][cameraGridY] = 0;
-      cameraGridX = newX;
-      cameraGridY = newY;
+      cameraGridX += dx;
+      cameraGridY += dy;
       float xPosition = baseX + (float)cameraGridX * xSpacing;
       float zPosition = baseZ + (float)cameraGridY * zSpacing;
       m_cameraPosition = ngl::Vec3(xPosition, 0.2, zPosition);

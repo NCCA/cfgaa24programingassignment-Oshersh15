@@ -53,6 +53,8 @@ class NGLScene : public QOpenGLWindow
     void renderMaze();
     bool isFullScreen = false;
     void printMazeGrid();
+    void rotateMatrixRight();
+    void rotateMatrixLeft();
 
 
 

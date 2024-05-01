@@ -154,7 +154,7 @@ void NGLScene::initializeGL()
   ngl::ShaderLib::setUniform("lightPosition", m_lightPos.toVec3());
   ngl::ShaderLib::setUniform("lightColor", 400.0f, 400.0f, 400.0f);
   ngl::ShaderLib::setUniform("exposure", 2.2f);
-  ngl::ShaderLib::setUniform("albedo", 0.950f, 0.71f, 0.29f);
+  ngl::ShaderLib::setUniform("albedo", 0.6f, 0.368f, 0.77f);
 
   ngl::ShaderLib::setUniform("metallic", 0.0f);
   ngl::ShaderLib::setUniform("roughness", 0.5f);
@@ -168,7 +168,7 @@ void NGLScene::initializeGL()
 
   ngl::VAOPrimitives::createDisk("disk", 0.8f, 120);
   ngl::VAOPrimitives::createTorus("torus", 0.15f, 0.4f, 40, 40);*/
-  ngl::VAOPrimitives::createTrianglePlane("plane", 7.5, 7.5, 80, 80, ngl::Vec3(0.86f, 0.69f, 0.98f));
+  ngl::VAOPrimitives::createTrianglePlane("plane", 7.5, 7.5, 80, 80, ngl::Vec3(0, 1, 0));
   // this timer is going to trigger an event every 40ms which will be processed in the
   //
   m_lightTimer = startTimer(40);
@@ -392,6 +392,8 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     float rotateSpeed = 5.0f;
     int dx = 0;
     int dy = 0;
+    int newX;
+    int newY;
 
     if(!hasRun)
     {
@@ -417,15 +419,15 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     break;
   // turn off wire frame
   case Qt::Key_Down:
-      m_cameraForward = ngl::Vec3(-1, 0, 0); //backwards
+      //m_cameraForward = ngl::Vec3(-1, 0, 0); //backwards
       dx = -1;
     break;
   case Qt::Key_Left:
-      m_cameraForward = ngl::Vec3(0,0,-1);
+    //  m_cameraForward = ngl::Vec3(0,0,-1);
       dy = 1;
       break;
   case Qt::Key_Right:
-      m_cameraForward = ngl::Vec3(0, 0, 1); //right
+     // m_cameraForward = ngl::Vec3(0, 0, 1); //right
       dy = -1;
       break;
   case Qt::Key_A:
@@ -464,17 +466,39 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
       float xPosition = baseX + (float)cameraGridX * xSpacing;
       float zPosition = baseZ + (float)cameraGridY * zSpacing;
       m_cameraPosition = ngl::Vec3(xPosition, 0.2, zPosition);
-      if(dy == -1) //if moved right
-      {
 
-      }
       updateCameraPosition();
-      ngl::Transformation transform;
-      transform.setPosition(xPosition, 0.0f, zPosition);
-      transform.setScale(0.2f, 0.2f, 0.2f);
-      cubeTransformations.push_back(transform);
+//      ngl::Transformation transform;
+//      transform.setPosition(xPosition, 0.0f, zPosition);
+//      transform.setScale(0.2f, 0.2f, 0.2f);
+//      cubeTransformations.push_back(transform);
       mazeGrid[cameraGridX][cameraGridY] = 2;
       printMazeGrid();
+
+      if(dy == -1) //if moved right
+      {
+          m_cameraForward = ngl::Vec3(0, 0, 1); //right
+          updateCameraPosition();
+          rotateMatrixRight();
+          std::cout << "reverse" << std::endl;
+          printMazeGrid();
+          newX = cameraGridY;
+          newY = 14 - cameraGridX;
+          cameraGridX = newX;
+          cameraGridY = newY;
+      }
+      else if(dy == 1) //if moved left
+      {
+          m_cameraForward = ngl::Vec3(0, 0, -1); //right
+          updateCameraPosition();
+          rotateMatrixLeft();
+          std::cout << "reverse" << std::endl;
+          printMazeGrid();
+          newX = 14 - cameraGridY;
+          newY = cameraGridX;
+          cameraGridX = newX;
+          cameraGridY = newY;
+      }
   }
   update();
 }
@@ -509,4 +533,35 @@ void NGLScene::timerEvent(QTimerEvent *_event)
   // re-draw GL
   update();
 }
+
+void NGLScene::rotateMatrixRight()
+{
+    int n = mazeGrid.size();
+    QVector<QVector<int>> newGrid(n, QVector<int>(n,0));
+
+    for(int i = 0; i < n; ++i)
+    {
+        for(int j = 0; j < n; ++j)
+        {
+            newGrid[j][n - 1 - i] = mazeGrid[i][j];
+        }
+    }
+    mazeGrid = newGrid;
+}
+
+void NGLScene::rotateMatrixLeft()
+{
+    int n = mazeGrid.size();
+    QVector<QVector<int>> newGrid(n, QVector<int>(n,0));
+
+    for(int i = 0; i < n; ++i)
+    {
+        for(int j = 0; j < n; ++j)
+        {
+            newGrid[n - 1 - j][i] = mazeGrid[i][j];
+        }
+    }
+    mazeGrid = newGrid;
+}
+
 

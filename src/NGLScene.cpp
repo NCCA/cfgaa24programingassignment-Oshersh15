@@ -80,7 +80,10 @@ void NGLScene::updateCameraPosition()
 {
     float radYaw = ngl::radians(m_cameraYaw);
 //    m_cameraForward = ngl::Vec3(cos(radYaw), 0, sin(radYaw));
-    m_cameraForward = ngl::Vec3(1, 0, 0); //forward
+ //   m_cameraForward = ngl::Vec3(1, 0, 0); //forward
+//    m_cameraForward = ngl::Vec3(-1, 0, 0); //backwards
+//    m_cameraForward = ngl::Vec3(0, 0, 1); //right
+    //m_cameraForward = ngl::Vec3(0, 0, -1); //left
     m_cameraRight = m_cameraForward.cross(ngl::Vec3(0,1,0));
 
     m_view = ngl::lookAt(m_cameraPosition, m_cameraPosition + m_cameraForward, ngl::Vec3(0,1,0));
@@ -227,6 +230,7 @@ void NGLScene::processArray() {
             {
                 std::cout << "Starting position at" << a << " , " << b << std::endl;
                 m_cameraPosition = ngl::Vec3(xPosition, 0.2, zPosition); //y is currently changed for testing convenience - supposed to be 0.0f
+                m_cameraForward = ngl::Vec3(1,0,0);
                 updateCameraPosition();
                 cameraGridX = a;
                 cameraGridY = b;
@@ -404,21 +408,24 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     break;
   // turn on wirframe rendering
   case Qt::Key_Up:
-      std::cout << "test" << mazeGrid[cameraGridX][cameraGridY] << std::endl;
-      std::cout << "test" << mazeGrid[cameraGridX+1][cameraGridY] << std::endl;
-      std::cout << "test" << mazeGrid[cameraGridX-1][cameraGridY] << std::endl;
-      std::cout << "test" << mazeGrid[cameraGridX][cameraGridY+1] << std::endl;
+//      std::cout << "test" << mazeGrid[cameraGridX][cameraGridY] << std::endl;
+//      std::cout << "test" << mazeGrid[cameraGridX+1][cameraGridY] << std::endl;
+//      std::cout << "test" << mazeGrid[cameraGridX-1][cameraGridY] << std::endl;
+//      std::cout << "test" << mazeGrid[cameraGridX][cameraGridY+1] << std::endl;
       dx = 1;
-      printMazeGrid();
+//      printMazeGrid();
     break;
   // turn off wire frame
   case Qt::Key_Down:
+      m_cameraForward = ngl::Vec3(-1, 0, 0); //backwards
       dx = -1;
     break;
   case Qt::Key_Left:
+      m_cameraForward = ngl::Vec3(0,0,-1);
       dy = 1;
       break;
   case Qt::Key_Right:
+      m_cameraForward = ngl::Vec3(0, 0, 1); //right
       dy = -1;
       break;
   case Qt::Key_A:
@@ -457,6 +464,10 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
       float xPosition = baseX + (float)cameraGridX * xSpacing;
       float zPosition = baseZ + (float)cameraGridY * zSpacing;
       m_cameraPosition = ngl::Vec3(xPosition, 0.2, zPosition);
+      if(dy == -1) //if moved right
+      {
+
+      }
       updateCameraPosition();
       ngl::Transformation transform;
       transform.setPosition(xPosition, 0.0f, zPosition);

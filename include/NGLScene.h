@@ -55,6 +55,7 @@ class NGLScene : public QOpenGLWindow
     void printMazeGrid();
     void rotateMatrixRight();
     void rotateMatrixLeft();
+    void flipMatrix();
 
 
 

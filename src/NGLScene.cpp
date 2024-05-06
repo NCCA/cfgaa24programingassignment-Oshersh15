@@ -15,7 +15,7 @@ bool hasRun = false;
 void NGLScene::loadMaze()
 {
     if (!hasRun) {
-        QImage image("/home/s5301744/repos/cfgaa24programingassignment-Oshersh15/image/Maze.png");
+        QImage image("image/Maze.png");
         if (image.isNull()) {
             qDebug() << "Failed to load maze image.";
             mazeGrid = QVector<QVector<int>>();
@@ -208,8 +208,8 @@ void NGLScene::processArray() {
     {
         loadMaze();
     }
-    float baseX = 0.0f;
-    float baseZ = 3.5f;  // Starting Z position for the first row
+    float BaseX = 0.0f;
+    float BaseZ = 3.5f;  // Starting Z position for the first row
     float xSpacing = 0.5f;  // Horizontal spacing between cubes
     float zSpacing = -0.5f;
 
@@ -218,8 +218,8 @@ void NGLScene::processArray() {
         for (int b = 0; b < mazeGrid[a].size(); ++b)
         {
             ngl::Transformation transform;
-            float xPosition = baseX + (float)a * xSpacing;
-            float zPosition = baseZ + (float)b * zSpacing;
+            float xPosition = BaseX + (float)a * xSpacing;
+            float zPosition = BaseZ + (float)b * zSpacing;
             transform.setPosition(xPosition, 0.0f, zPosition);
             transform.setScale(0.5f, 0.5f, 0.5f);
             if (mazeGrid[a][b] == 1)
@@ -386,8 +386,8 @@ void NGLScene::wheelEvent(QWheelEvent *_event)
 
 void NGLScene::keyPressEvent(QKeyEvent *_event)
 {
-    float baseX = 0.0f;
-    float baseZ = 3.5f;  // Starting Z position for the first row
+//    baseX = 0.0f;
+//    baseZ = 3.5f;  // Starting Z position for the first row
     float xSpacing = 0.5f;  // Horizontal spacing between cubes
     float zSpacing = -0.5f;
     float moveSpeed = 0.1f;
@@ -402,6 +402,7 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     float zPosition;
     float newBaseX = baseX;
     float newBaseZ = baseZ;
+    float cameraRef = m_cameraYaw;
 
     if(!hasRun)
     {
@@ -422,6 +423,33 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
       {
         move = true;
         dx = 1;
+        std::cout << "cameraRef " << cameraRef << std::endl;
+        if (mazeGrid[cameraGridX + dx][cameraGridY + dy] == 0 && move)
+        {
+            std::cout << "baseX: " << baseX << "baseZ: " << baseZ << std::endl;
+            mazeGrid[cameraGridX][cameraGridY] = 0;
+            cameraGridX += dx;
+            if (cameraRef != 0)
+            {
+        //              baseX = baseX + ((float)mazeGrid.size() - 1) * zSpacing;
+        //              baseZ = baseZ - ((float)mazeGrid.size() - 1) * xSpacing;
+              baseX = 0.5; //test
+              baseZ = 5.0; //test
+              std::cout << "newbaseX: " << baseX << "newbaseZ: " << baseZ << std::endl;
+            }
+            xPosition = baseX + (float) cameraGridX * xSpacing;
+            zPosition = baseZ + (float) cameraGridY * zSpacing;
+            std::cout << "xPosition: " << xPosition << " zPosition: " << zPosition << std::endl;
+            cameraRef = 0;
+            std::cout << "cameraRef " << cameraRef << std::endl;
+
+            m_cameraPosition = ngl::Vec3(xPosition, 0.4, zPosition);
+
+            updateCameraPosition();
+            mazeGrid[cameraGridX][cameraGridY] = 2;
+            std::cout << cameraGridX << " " << cameraGridY << std::endl;
+            printMazeGrid();
+        }
       }
 //      std::cout << "test" << mazeGrid[cameraGridX][cameraGridY] << std::endl; :)
 //      std::cout << "test" << mazeGrid[cameraGridX+1][cameraGridY] << std::endl;
@@ -432,8 +460,7 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     break;
   // turn off wire frame
   case Qt::Key_Down:
-      if((int)m_cameraYaw % 90 == 0)
-      {
+      if((int)m_cameraYaw % 90 == 0) {
           move = true;
           dx = -1;
       }
@@ -442,13 +469,36 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     break;
   case Qt::Key_Left:
       m_cameraYaw -= rotateSpeed;
-    //  m_cameraForward = ngl::Vec3(0,0,-1);
-      dy = 1;
+      updateCameraPosition();
+      if((int)m_cameraYaw % 90 == 0)
+      {
+          rotateMatrixRight();
+          std::cout << "reverse" << std::endl;
+          printMazeGrid();
+          newX = cameraGridY;
+          newY = 14 - cameraGridX;
+          cameraGridX = newX;
+          cameraGridY = newY;
+          std::cout << cameraGridX << " " << cameraGridY << std::endl;
+      }
+      //dy = 1;
       break;
   case Qt::Key_Right:
       m_cameraYaw += rotateSpeed;
-     // m_cameraForward = ngl::Vec3(0, 0, 1); //right
-      dy = -1;
+      updateCameraPosition();
+          if((int)m_cameraYaw % 90 == 0)
+              // if(m_cameraYaw == 0 || m_cameraYaw == 90 || m_cameraYaw == 180 || m_cameraYaw == 270 || m_cameraYaw == 360)
+          {
+              rotateMatrixLeft();
+              std::cout << "reverse" << std::endl;
+              printMazeGrid();
+              newX = 14 - cameraGridY;
+              newY = cameraGridX;
+              cameraGridX = newX;
+              cameraGridY = newY;
+              std::cout << cameraGridX << " " << cameraGridY << std::endl;
+          }
+      //dy = -1;
       break;
   case Qt::Key_A: //rotate left
       m_cameraYaw -= rotateSpeed;
@@ -480,52 +530,53 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     break;
   }
 
-    if(dy == -1) //if moved right
-    {
+ //   if(dy == -1) //if moved right
+//    {
      //   m_cameraForward = ngl::Vec3(0, 0, 1); //right
-        updateCameraPosition();
-        if((int)m_cameraYaw % 90 == 0)
-       // if(m_cameraYaw == 0 || m_cameraYaw == 90 || m_cameraYaw == 180 || m_cameraYaw == 270 || m_cameraYaw == 360)
-        {
-            //move = true;
-            rotateMatrixLeft();
-            std::cout << "reverse" << std::endl;
-            printMazeGrid();
-            newX = 14 - cameraGridY;
-            newY = cameraGridX;
-            cameraGridX = newX;
-            cameraGridY = newY;
-            std::cout << cameraGridX << " " << cameraGridY << std::endl;
-            std::cout << "newbaseX: " << newBaseX << "newbaseZ: " << newBaseZ << std::endl;
-            //flip = true;
-            //m_cameraYaw = 0;
-        }
-    }
-    else if(dy == 1) //if moved left
-    {
-        //m_cameraForward = ngl::Vec3(0, 0, -1); //right
-        updateCameraPosition();
-        if((int)m_cameraYaw % 90 == 0)
-        {
-            //move = true;
-            rotateMatrixRight();
-            std::cout << "reverse" << std::endl;
-            printMazeGrid();
-            newX = cameraGridY;
-            newY = 14 - cameraGridX;
-            cameraGridX = newX;
-            cameraGridY = newY;
-            std::cout << cameraGridX << " " << cameraGridY << std::endl;
-            //flip = true;
-//            flipMatrix();
-//            std::cout << "flipped" << std::endl;
+//        updateCameraPosition();
+//        if((int)m_cameraYaw % 90 == 0)
+//       // if(m_cameraYaw == 0 || m_cameraYaw == 90 || m_cameraYaw == 180 || m_cameraYaw == 270 || m_cameraYaw == 360)
+//        {
+//            //move = true;
+//            rotateMatrixLeft();
+//            std::cout << "reverse" << std::endl;
 //            printMazeGrid();
-//            newX = 14 - cameraGridX; //cameraGridY remains the same
+//            newX = 14 - cameraGridY;
+//            newY = cameraGridX;
 //            cameraGridX = newX;
+//            cameraGridY = newY;
 //            std::cout << cameraGridX << " " << cameraGridY << std::endl;
-            //m_cameraYaw = 0;
-        }
-    }
+//            cameraRef = m_cameraYaw;
+//            //flip = true;
+//            //m_cameraYaw = 0;
+//        }
+//    }
+ //   else if(dy == 1) //if moved left
+ //   {
+        //m_cameraForward = ngl::Vec3(0, 0, -1); //right
+//        updateCameraPosition();
+//        if((int)m_cameraYaw % 90 == 0)
+//        {
+//            //move = true;
+//            rotateMatrixRight();
+//            std::cout << "reverse" << std::endl;
+//            printMazeGrid();
+//            newX = cameraGridY;
+//            newY = 14 - cameraGridX;
+//            cameraGridX = newX;
+//            cameraGridY = newY;
+//            std::cout << cameraGridX << " " << cameraGridY << std::endl;
+//            cameraRef = m_cameraYaw;
+//            //flip = true;
+////            flipMatrix();
+////            std::cout << "flipped" << std::endl;
+////            printMazeGrid();
+////            newX = 14 - cameraGridX; //cameraGridY remains the same
+////            cameraGridX = newX;
+////            std::cout << cameraGridX << " " << cameraGridY << std::endl;
+//            //m_cameraYaw = 0;
+//        }
+ //   }
 //    else if(dx == -1) //if moved back
 //    {
 //        m_cameraForward = ngl::Vec3(1, 0, 0);
@@ -538,35 +589,42 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
 //        std::cout << "test" << mazeGrid[cameraGridX][cameraGridY] << std::endl;
 //     //   dx = 1;
 //    }
-    if(dx == 1)
-    {
-      if(mazeGrid[cameraGridX + dx][cameraGridY + dy] == 0 && move)
-      {
-          mazeGrid[cameraGridX][cameraGridY] = 0;
-          cameraGridX += dx;
-          //cameraGridY += dy;
-          if(m_cameraYaw != 0)
-          {
-              baseX = baseX + ((float)mazeGrid.size() - 1) * zSpacing;
-              baseZ = baseZ - ((float)mazeGrid.size() - 1) * xSpacing;
-          }
-          xPosition = baseX + (float)cameraGridX * xSpacing;
-          zPosition = baseZ + (float)cameraGridY * zSpacing;
-          std::cout << "xPosition: " << xPosition << " zPosition: " << zPosition << std::endl;
-          std::cout << "baseXf: " << newBaseX << "baseZf: " << newBaseZ << std::endl;
-
-          m_cameraPosition = ngl::Vec3(xPosition, 0.4, zPosition);
-
-          updateCameraPosition();
-    //      ngl::Transformation transform;
-    //      transform.setPosition(xPosition, 0.0f, zPosition);
-    //      transform.setScale(0.2f, 0.2f, 0.2f);
-    //      cubeTransformations.push_back(transform);
-          mazeGrid[cameraGridX][cameraGridY] = 2;
-          std::cout << cameraGridX << " " << cameraGridY << std::endl;
-          printMazeGrid();
-      }
-    }
+//    cameraRef = m_cameraYaw;
+//    std::cout << "cameraRef " << cameraRef << std::endl;
+//    if(dx == 1)
+//    {
+//      if(mazeGrid[cameraGridX + dx][cameraGridY + dy] == 0 && move)
+//      {
+//          std::cout << "baseX: " << newBaseX << "baseZ: " << newBaseZ << std::endl;
+//          mazeGrid[cameraGridX][cameraGridY] = 0;
+//          cameraGridX += dx;
+//          //cameraGridY += dy;
+//          if(cameraRef != 0)
+//          {
+////              baseX = baseX + ((float)mazeGrid.size() - 1) * zSpacing;
+////              baseZ = baseZ - ((float)mazeGrid.size() - 1) * xSpacing;
+//              baseX = 0.5;
+//              baseZ = 5.0;
+//              std::cout << "newbaseX: " << baseX << "newbaseZ: " << baseZ << std::endl;
+//          }
+//          xPosition = baseX + (float)cameraGridX * xSpacing;
+//          zPosition = baseZ + (float)cameraGridY * zSpacing;
+//          std::cout << "xPosition: " << xPosition << " zPosition: " << zPosition << std::endl;
+//          cameraRef = 0;
+//          std::cout << "cameraRef " << cameraRef << std::endl;
+//
+//          m_cameraPosition = ngl::Vec3(xPosition, 0.4, zPosition);
+//
+//          updateCameraPosition();
+//    //      ngl::Transformation transform;
+//    //      transform.setPosition(xPosition, 0.0f, zPosition);
+//    //      transform.setScale(0.2f, 0.2f, 0.2f);
+//    //      cubeTransformations.push_back(transform);
+//          mazeGrid[cameraGridX][cameraGridY] = 2;
+//          std::cout << cameraGridX << " " << cameraGridY << std::endl;
+//          printMazeGrid();
+//      }
+//    }
     update();
 }
 

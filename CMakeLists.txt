@@ -54,6 +54,10 @@ add_custom_target(${TargetName}CopyShaders ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_CURRENT_SOURCE_DIR}/shaders
     ${PROJECT_BINARY_DIR}/shaders
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_CURRENT_SOURCE_DIR}/image
+    ${PROJECT_BINARY_DIR}/image
+
 )
 
 ADD_DEPENDENCIES(${TargetName} ${TargetName}CopyShaders)

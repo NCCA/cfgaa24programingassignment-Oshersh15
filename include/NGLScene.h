@@ -156,6 +156,8 @@ private:
     float m_cameraYaw;
     QVector<QVector<int>> m_mazeMatrix;
     QVector<QVector<int>> mazeGrid;
+    float baseX = 0.0f;
+    float baseZ = 3.5f;
 
 
 

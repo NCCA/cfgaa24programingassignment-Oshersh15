@@ -158,6 +158,8 @@ private:
     QVector<QVector<int>> mazeGrid;
     float baseX = 0.0f;
     float baseZ = 3.5f;
+    float lastxPosition;
+    float lastzPosition;
 
 
 

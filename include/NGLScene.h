@@ -56,10 +56,8 @@ class NGLScene : public QOpenGLWindow
     void rotateMatrixRight();
     void rotateMatrixLeft();
     void flipMatrix();
-
-
-
-
+    void findPathCorners();
+    void placeSphere(float x, float y, float z);
 
 private:
     //----------------------------------------------------------------------------------------------------------------------
@@ -160,11 +158,10 @@ private:
     float baseZ = 3.5f;
     float lastxPosition;
     float lastzPosition;
-
-
-
-
+    float xSpacing = 0.5f;  // Horizontal spacing between cubes
+    float zSpacing = -0.5f;
 };
+
 
 
 

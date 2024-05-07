@@ -22,4 +22,12 @@
 
 #include <math.h>
 #include <cmath>
+#include <random>
+#include <queue>
+#include <functional>
+#include <map>
+#include <set>
+#include <QPoint>
+#include <algorithm>
+#include <QHash>
 

@@ -160,6 +160,8 @@ private:
     float lastzPosition;
     float xSpacing = 0.5f;  // Horizontal spacing between cubes
     float zSpacing = -0.5f;
+    int selectedX;
+    int selectedY;
 };
 
 

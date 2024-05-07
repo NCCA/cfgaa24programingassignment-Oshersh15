@@ -72,7 +72,6 @@ void NGLScene::loadMaze()
             }
         }
         hasRun = true;
-        printMazeGrid();
         findPathCorners();
     }
 }
@@ -118,9 +117,10 @@ void NGLScene::findPathCorners()
         std::uniform_int_distribution<> distrib(0, corners.size() - 1);
         int index = distrib(gen);
 //        int index = rand() % corners.size();
-        int selectedX = corners[index][0];
-        int selectedY = corners[index][1];
-
+        selectedX = corners[index][0];
+        selectedY = corners[index][1];
+        mazeGrid[selectedX][selectedY] = 3;
+        std::cout << "selectedX: "<<selectedX << " selectedY" << selectedY<<std::endl;
         float xPosition = baseX + selectedX * xSpacing;
         float zPosition = baseZ + selectedY * zSpacing;
         std::cout << "spherexPosition: "<<xPosition << " spherezPosition" << zPosition<<std::endl;
@@ -456,10 +456,6 @@ void NGLScene::wheelEvent(QWheelEvent *_event)
 
 void NGLScene::keyPressEvent(QKeyEvent *_event)
 {
-//    baseX = 0.0f;
-//    baseZ = 3.5f;  // Starting Z position for the first row
-//    float xSpacing = 0.5f;  // Horizontal spacing between cubes
-//    float zSpacing = -0.5f;
     float moveSpeed = 0.1f;
     float rotateSpeed = 5.0f;
     int dx = 0;
@@ -470,11 +466,7 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     static bool flip = true;
     float xPosition;
     float zPosition;
-    float newBaseX = baseX;
-    float newBaseZ = baseZ;
     float cameraRef = m_cameraYaw;
-    int oldX;
-    int oldY;
 
     if(!hasRun)
     {
@@ -496,7 +488,7 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
         move = true;
         dx = 1;
         std::cout << "cameraRef " << cameraRef << std::endl;
-        if (mazeGrid[cameraGridX + dx][cameraGridY + dy] == 0 && move)
+        if (mazeGrid[cameraGridX + dx][cameraGridY + dy] != 1 && move)
         {
             mazeGrid[cameraGridX][cameraGridY] = 0;
             cameraGridX += dx;
@@ -547,6 +539,7 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     break;
   case Qt::Key_Left:
       m_cameraYaw -= rotateSpeed;
+      //m_cameraYaw -= rotateSpeed * moveSpeed; -> trying to stop rotation every 90 degrees
       updateCameraPosition();
       if((int)m_cameraYaw % 90 == 0)
       {
@@ -557,7 +550,12 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
           newY = 14 - cameraGridX;
           cameraGridX = newX;
           cameraGridY = newY;
+          newX = selectedY;
+          newY = 14 - selectedX;
+          selectedX = newX;
+          selectedY = newY;
           std::cout << cameraGridX << " " << cameraGridY << std::endl;
+          std::cout << "selectedX: "<<selectedX << " selectedY" << selectedY<<std::endl;
       }
       //dy = 1;
       break;
@@ -570,13 +568,16 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
               rotateMatrixLeft();
               std::cout << "reverse" << std::endl;
               printMazeGrid();
-              oldX = cameraGridX;
-              oldY = cameraGridY;
               newX = 14 - cameraGridY;
               newY = cameraGridX;
               cameraGridX = newX;
               cameraGridY = newY;
+              newX = 14 - selectedY;
+              newY = selectedX;
+              selectedX = newX;
+              selectedY = newY;
               std::cout << cameraGridX << " " << cameraGridY << std::endl;
+              std::cout << "selectedX: "<<selectedX << " selectedY" << selectedY<<std::endl;
           }
       //dy = -1;
       break;

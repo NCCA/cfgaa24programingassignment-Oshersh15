@@ -58,6 +58,7 @@ class NGLScene : public QOpenGLWindow
     void flipMatrix();
     void findPathCorners();
     void placeSphere(float x, float y, float z);
+    void findShortestPath();
 
 private:
     //----------------------------------------------------------------------------------------------------------------------
@@ -162,6 +163,9 @@ private:
     float zSpacing = -0.5f;
     int selectedX;
     int selectedY;
+    float shortest = 100.0f;
+    int currentShortestX;
+    int currentShortestY;
 };
 
 

@@ -682,4 +682,51 @@ void NGLScene::flipMatrix()
     }
 }
 
+void NGLScene::findShortestPath()
+{
+    float distance;
+
+    if(mazeGrid[selectedX+1][selectedY] == 0)
+    {
+        distance = sqrt(pow(((selectedX+1) - cameraGridX), 2) + pow((selectedY - cameraGridY), 2));
+        if(shortest>distance)
+        {
+            shortest = distance;
+            currentShortestX = selectedX + 1;
+            currentShortestY = selectedY;
+        }
+    }
+    if(mazeGrid[selectedX-1][selectedY] == 0)
+    {
+        distance = sqrt(pow(((selectedX-1) - cameraGridX), 2) + pow((selectedY - cameraGridY), 2));
+        if(shortest>distance)
+        {
+            shortest = distance;
+            currentShortestX = selectedX - 1;
+            currentShortestY = selectedY;
+        }
+    }
+    if(mazeGrid[selectedX][selectedY+1] == 0)
+    {
+        distance = sqrt(pow((selectedX - cameraGridX), 2) + pow(((selectedY+1) - cameraGridY), 2));
+        if(shortest>distance)
+        {
+            shortest = distance;
+            currentShortestX = selectedX;
+            currentShortestY = selectedY + 1;
+        }
+    }
+    if(mazeGrid[selectedX][selectedY-1] == 0)
+    {
+        distance = sqrt(pow((selectedX - cameraGridX), 2) + pow(((selectedY-1) - cameraGridY), 2));
+        if(shortest>distance)
+        {
+            shortest = distance;
+            currentShortestX = selectedX;
+            currentShortestY = selectedY - 1;
+        }
+    }
+
+}
+
 

@@ -163,9 +163,11 @@ private:
     float zSpacing = -0.5f;
     int selectedX;
     int selectedY;
-    float shortest = 100.0f;
+    float shortest = std::numeric_limits<float>::max();
     int currentShortestX;
     int currentShortestY;
+    float sphereLastxPosition;
+    float sphereLastzPosition;
 };
 
 

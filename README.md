@@ -31,11 +31,14 @@
 
  I added a sphere representing the ghost oh the game, it is "chasing" the character by checking all 4 direction, seeing which ones are possible to proceed to (are paths) and then compares the distances between those spaces and proceeds to the place with the shortest path to the character.
 
+ I added a coin to every path spot.
+
  Moving forward, the next phase of development will concentrate on:<ol> 
-    <li>placing coins in every path location and make them dissapear once the character steps on the spot they are in</li> 
+    <li>make coins dissapear once the character steps on the spot they are in</li> 
     <li>creating UI</li> 
     <li>making sure the game ends when the character and the ghost collide</li>
-    <li>making my movements and rotations better</li> </ol>
+    <li>making my movements and rotations better</li> 
+    <li> changing textures</li> </ol>
     <ol>
     If I have time: 
     <li>maybe switching the sphere with an obj file of a mesh resembling the ghost more</li>

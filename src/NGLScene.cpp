@@ -77,6 +77,7 @@ void NGLScene::loadMaze()
 }
 
 std::vector<ngl::Transformation> sphereTransformations;
+std::vector<ngl::Transformation> coinTransformations;
 void NGLScene::findPathCorners()
 {
     QVector<QVector<int>> corners;
@@ -237,11 +238,11 @@ void NGLScene::initializeGL()
 
   ngl::VAOPrimitives::createSphere("sphere", 0.5f, 50);
 
-//  ngl::VAOPrimitives::createCylinder("cylinder", 0.5f, 1.4f, 40, 40);
+  ngl::VAOPrimitives::createCylinder("cylinder", 0.15f, 0.1, 40, 40);
 //
 //  ngl::VAOPrimitives::createCone("cone", 0.5, 1.4f, 20, 20);
 //
-//  ngl::VAOPrimitives::createDisk("disk", 0.8f, 120);
+  ngl::VAOPrimitives::createDisk("disk", 0.2f, 120);
 //  ngl::VAOPrimitives::createTorus("torus", 0.15f, 0.4f, 40, 40);
   ngl::VAOPrimitives::createTrianglePlane("plane", 7.5, 7.5, 80, 80, ngl::Vec3(0, 1, 0)); //need to find out how to move the plane to a different place
   //ngl::VAOPrimitives::createTrianglePlane("plane", 15.0, 15.0, 80, 80, ngl::Vec3(0, 1, 0)); // for now making it bigger than necessary
@@ -286,6 +287,8 @@ void NGLScene::processArray() {
     float BaseZ = 3.5f;  // Starting Z position for the first row
 //    float xSpacing = 0.5f;  // Horizontal spacing between cubes
 //    float zSpacing = -0.5f;
+    float coinxPosition;
+    float coinzPosition;
 
     for (int a = 0; a < mazeGrid.size(); ++a)
     {
@@ -303,11 +306,23 @@ void NGLScene::processArray() {
             else if (mazeGrid[a][b] == 2)
             {
             //    std::cout << "Starting position at" << a << " , " << b << std::endl;
-                m_cameraPosition = ngl::Vec3(xPosition, 0.2, zPosition); //y is currently changed for testing convenience - supposed to be 0.0f
+                m_cameraPosition = ngl::Vec3(xPosition, 0.2, zPosition);
                 m_cameraForward = ngl::Vec3(1,0,0);
                 updateCameraPosition();
                 cameraGridX = a;
                 cameraGridY = b;
+            }
+            else
+            {
+                coinxPosition = baseX + a * xSpacing;
+                coinzPosition = baseZ + b * zSpacing;
+
+                ngl::Transformation cointransform;
+                cointransform.setPosition(coinxPosition, 0.0f, coinzPosition);
+                cointransform.setScale(0.3f,0.3f,0.3f);
+                cointransform.setRotation(90.0f,0.0f,0.0f);
+                coinTransformations.push_back(cointransform);
+                printMazeGrid();
             }
         }
     }
@@ -324,6 +339,12 @@ void NGLScene::renderMaze() {
         m_transform = transform;
         loadMatricesToShader();
         ngl::VAOPrimitives::draw("sphere");
+    }
+    for (const auto& cointransform : coinTransformations)
+    {
+        m_transform = cointransform;
+        loadMatricesToShader();
+        ngl::VAOPrimitives::draw("cylinder");
     }
 }
 

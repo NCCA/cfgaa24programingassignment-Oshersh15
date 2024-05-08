@@ -737,7 +737,7 @@ void NGLScene::findShortestPath()
     std::cout << "currentShortestX" << currentShortestX << "currentShortestY" <<currentShortestY << std::endl;
     float xPosition = baseX + currentShortestX * xSpacing;
     float zPosition = baseZ + currentShortestY * zSpacing;
-    placeSphere(currentShortestX, 0.0f, currentShortestY);
+    placeSphere(xPosition, 0.0f, zPosition);
     mazeGrid[selectedX][selectedY] = 0;
     selectedX = currentShortestX;
     selectedY = currentShortestY;

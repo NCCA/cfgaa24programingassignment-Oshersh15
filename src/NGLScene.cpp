@@ -76,6 +76,7 @@ void NGLScene::loadMaze()
     }
 }
 
+std::vector<ngl::Transformation> sphereTransformations;
 void NGLScene::findPathCorners()
 {
     QVector<QVector<int>> corners;
@@ -125,11 +126,17 @@ void NGLScene::findPathCorners()
         float zPosition = baseZ + selectedY * zSpacing;
         std::cout << "spherexPosition: "<<xPosition << " spherezPosition" << zPosition<<std::endl;
 
-        placeSphere(xPosition, 0.0f, zPosition);
+        //placeSphere(xPosition, 0.0f, zPosition);
+        ngl::Transformation transform;
+        transform.setPosition(xPosition, 0.0f, zPosition);
+        transform.setScale(0.3f,0.3f,0.3f);
+        sphereTransformations.push_back(transform);
+        printMazeGrid();
     }
 }
 
-std::vector<ngl::Transformation> sphereTransformations;
+//std::vector<ngl::Transformation> sphereTransformations;
+//void NGLScene::placeSphere(float x, float y, float z)
 void NGLScene::placeSphere(float x, float y, float z)
 {
     ngl::Transformation transform;
@@ -483,6 +490,7 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     break;
   // turn on wirframe rendering
   case Qt::Key_Up:
+      findShortestPath();
       if((int)m_cameraYaw % 90 == 0)
       {
         move = true;
@@ -726,7 +734,14 @@ void NGLScene::findShortestPath()
             currentShortestY = selectedY - 1;
         }
     }
-
+    std::cout << "currentShortestX" << currentShortestX << "currentShortestY" <<currentShortestY << std::endl;
+    float xPosition = baseX + currentShortestX * xSpacing;
+    float zPosition = baseZ + currentShortestY * zSpacing;
+    placeSphere(currentShortestX, 0.0f, currentShortestY);
+    mazeGrid[selectedX][selectedY] = 0;
+    selectedX = currentShortestX;
+    selectedY = currentShortestY;
+    mazeGrid[selectedX][selectedY] = 3;
 }
 
 

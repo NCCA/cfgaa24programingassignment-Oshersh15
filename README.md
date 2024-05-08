@@ -25,10 +25,22 @@
 </div>
  The structure of the maze has been successfully implemented, with visual representation aligning with the conceptual design. 
  
- Continuing working on the project, I have implemented camera movement controlled by keys and set the initial camera position in the most central spot without a wall. - I am currently struggling with collision detection.
+ Continuing working on the project, I have implemented camera movement controlled by keys and set the initial camera position in the most central spot without a wall.
 
- Moving forward, the next phase of development will concentrate on integrating collision detection and making key control better (I want moving to the sides to make a 90 degrees rotation towards the side selected). 
+ The collision detection is working as well, the user can go around the maze - he can only move forward so if he wants to move to another side, he will need to rotate (rotations MUST be in exactly 90 degrees, otherwise the character won't move).
 
+ I added a sphere representing the ghost oh the game, it is "chasing" the character by checking all 4 direction, seeing which ones are possible to proceed to (are paths) and then compares the distances between those spaces and proceeds to the place with the shortest path to the character.
+
+ Moving forward, the next phase of development will concentrate on:<ol> 
+    <li>placing coins in every path location and make them dissapear once the character steps on the spot they are in</li> 
+    <li>creating UI</li> 
+    <li>making sure the game ends when the character and the ghost collide</li>
+    <li>making my movements and rotations better</li> </ol>
+    <ol>
+    If I have time: 
+    <li>maybe switching the sphere with an obj file of a mesh resembling the ghost more</li>
+    <li>maybe add more ghosts</li>
+    </ol>
 
 
 

@@ -238,11 +238,11 @@ void NGLScene::initializeGL()
 
   ngl::VAOPrimitives::createSphere("sphere", 0.5f, 50);
 
-  ngl::VAOPrimitives::createCylinder("cylinder", 0.15f, 0.1, 40, 40);
+  ngl::VAOPrimitives::createCylinder("cylinder", 0.09f, 0.1, 40, 10);
 //
 //  ngl::VAOPrimitives::createCone("cone", 0.5, 1.4f, 20, 20);
 //
-  ngl::VAOPrimitives::createDisk("disk", 0.2f, 120);
+ // ngl::VAOPrimitives::createDisk("disk", 0.2f, 120);
 //  ngl::VAOPrimitives::createTorus("torus", 0.15f, 0.4f, 40, 40);
   ngl::VAOPrimitives::createTrianglePlane("plane", 7.5, 7.5, 80, 80, ngl::Vec3(0, 1, 0)); //need to find out how to move the plane to a different place
   //ngl::VAOPrimitives::createTrianglePlane("plane", 15.0, 15.0, 80, 80, ngl::Vec3(0, 1, 0)); // for now making it bigger than necessary
@@ -473,6 +473,16 @@ void NGLScene::wheelEvent(QWheelEvent *_event)
   update();
 }
 //----------------------------------------------------------------------------------------------------------------------
+void removeCoins(float x, float z)
+{
+    for(auto it = coinTransformations.begin(); it != coinTransformations.end(); ++it)
+    {
+        if(it->getPosition().m_x == x && it->getPosition().m_z == z)
+        {
+            coinTransformations.erase(it);
+        }
+    }
+}
 
 void NGLScene::keyPressEvent(QKeyEvent *_event)
 {
@@ -536,7 +546,7 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
                     std::cout << "xPosition: " << xPosition << " zPosition: " << zPosition << std::endl;
                     break;
             }
-
+            removeCoins(xPosition, zPosition);
             lastxPosition = xPosition;
             lastzPosition = zPosition;
             std::cout << "lastxPosition: " << lastxPosition << " lastzPosition: " << lastzPosition << std::endl;

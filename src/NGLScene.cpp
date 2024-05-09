@@ -211,6 +211,9 @@ void NGLScene::initializeGL()
   ngl::ShaderLib::linkProgramObject(shaderProgram);
   // and make it active ready to load values
   ngl::ShaderLib::use(shaderProgram);
+
+//  ngl::Texture texture("image/Maze.png");
+//  m_textureName = texture.setTextureGL();
   // We now create our view matrix for a static camera
   ngl::Vec3 from(00.0f, 0.0f, 0.0f);
   ngl::Vec3 to(0.0f, 0.0f, 0.0f);
@@ -238,7 +241,7 @@ void NGLScene::initializeGL()
 
   ngl::VAOPrimitives::createSphere("sphere", 0.5f, 50);
 
-  ngl::VAOPrimitives::createCylinder("cylinder", 0.09f, 0.1, 40, 10);
+  ngl::VAOPrimitives::createCylinder("cylinder", 0.095f, 0.1, 40, 10);
 //
 //  ngl::VAOPrimitives::createCone("cone", 0.5, 1.4f, 20, 20);
 //
@@ -331,6 +334,7 @@ void NGLScene::processArray() {
 void NGLScene::renderMaze() {
     for (const auto& transform : cubeTransformations) {
         m_transform = transform;
+        ngl::ShaderLib::setUniform("albedo", 0.6f, 0.368f, 0.77f);
         loadMatricesToShader();
         ngl::VAOPrimitives::draw("cube");
     }
@@ -338,11 +342,15 @@ void NGLScene::renderMaze() {
     {
         m_transform = transform;
         loadMatricesToShader();
+        ngl::ShaderLib::setUniform("albedo", 0.96f, 0.18f, 0.8f);
         ngl::VAOPrimitives::draw("sphere");
     }
     for (const auto& cointransform : coinTransformations)
     {
         m_transform = cointransform;
+//        glBindTexture(GL_TEXTURE_2D, m_textureName);
+//        glPolygonMode(GL_FRONT_AND_BACK, m_polyMode);
+        ngl::ShaderLib::setUniform("albedo", 0.49f, 0.4f, 0.03f);
         loadMatricesToShader();
         ngl::VAOPrimitives::draw("cylinder");
     }
@@ -369,6 +377,7 @@ void NGLScene::drawScene(const std::string &_shader) {
     m_transform.reset();
     {
         m_transform.setPosition(3.5f, -0.25f, 0.0f);
+        ngl::ShaderLib::setUniform("albedo", 0.6f, 0.368f, 0.77f);
         loadMatricesToShader();
         ngl::VAOPrimitives::draw("plane");
     } // and before a pop
@@ -380,6 +389,11 @@ void NGLScene::paintGL()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glViewport(0, 0, m_win.width, m_win.height);
   drawScene("PBR");
+//  loadMatricesToShader();
+//  glBindTexture(GL_TEXTURE_2D, m_textureName);
+//  glPolygonMode(GL_FRONT_AND_BACK, m_polyMode);
+//  loadMatricesToShader();
+  //ngl::VAOPrimitives::draw("cylinder");
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -496,7 +510,7 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     static bool flip = true;
     float xPosition;
     float zPosition;
-    float cameraRef = m_cameraYaw;
+    //float cameraRef = m_cameraYaw;
 
     if(!hasRun)
     {
@@ -514,11 +528,24 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
   // turn on wirframe rendering
   case Qt::Key_Up:
       findShortestPath();
+      if((int)m_cameraYaw<45)
+          m_cameraYaw = 0;
+      else if((int)m_cameraYaw<135)
+          m_cameraYaw = 90;
+      else if((int)m_cameraYaw<225)
+          m_cameraYaw = 180;
+      else if((int)m_cameraYaw<315)
+          m_cameraYaw = 270;
+      else
+          m_cameraYaw = 0;
+      updateCameraPosition();
+      std::cout << "newm_cameraYaw" << m_cameraYaw << std::endl;
+
       if((int)m_cameraYaw % 90 == 0)
       {
         move = true;
         dx = 1;
-        std::cout << "cameraRef " << cameraRef << std::endl;
+        //std::cout << "cameraRef " << cameraRef << std::endl;
         if (mazeGrid[cameraGridX + dx][cameraGridY + dy] != 1 && move)
         {
             mazeGrid[cameraGridX][cameraGridY] = 0;

@@ -30,5 +30,6 @@
 #include <QPoint>
 #include <algorithm>
 #include <QHash>
+#include <ngl/Texture.h>
 
 

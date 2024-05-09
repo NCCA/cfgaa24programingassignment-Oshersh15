@@ -168,6 +168,8 @@ private:
     int currentShortestY;
     float sphereLastxPosition;
     float sphereLastzPosition;
+    GLuint m_textureName;
+    GLenum m_polyMode;
 };
 
 

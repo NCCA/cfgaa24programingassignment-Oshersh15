@@ -504,12 +504,13 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     float rotateSpeed = 5.0f;
     int dx = 0;
     int dy = 0;
-    int newX;
-    int newY;
+//    int newX;
+//    int newY;
     static bool move = false;
     static bool flip = true;
     float xPosition;
     float zPosition;
+    bool clockwiseRotation = true;
    // int currentAngle = (int)m_cameraYaw;
     //float cameraRef = m_cameraYaw;
 
@@ -539,7 +540,6 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
           m_cameraYaw = 270;
       else
           m_cameraYaw = 0;
-      lastRotation = (int)m_cameraYaw;
       updateCameraPosition();
       std::cout << "lastRotation: " << lastRotation << "currentAngle" << (int)m_cameraYaw<< std::endl;
       printMazeGrid();
@@ -549,6 +549,19 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
       {
         move = true;
         dx = 1;
+        if(lastRotation != (int)m_cameraYaw)
+        {
+            if(clockwiseRotation)
+            {
+                rotateMatrixLeft();
+            }
+            else
+            {
+                rotateMatrixRight();
+            }
+        }
+        clockwiseRotation = m_cameraYaw > lastRotation;
+        lastRotation = (int)m_cameraYaw;
         //std::cout << "cameraRef " << cameraRef << std::endl;
         if (mazeGrid[cameraGridX + dx][cameraGridY + dy] != 1 && move)
         {
@@ -609,16 +622,16 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
           rotateMatrixRight();
           std::cout << "reverse" << std::endl;
           printMazeGrid();
-          newX = cameraGridY;
-          newY = 14 - cameraGridX;
-          cameraGridX = newX;
-          cameraGridY = newY;
-          newX = selectedY;
-          newY = 14 - selectedX;
-          selectedX = newX;
-          selectedY = newY;
-          std::cout << cameraGridX << " " << cameraGridY << std::endl;
-          std::cout << "selectedX: " << selectedX << " selectedY" << selectedY << std::endl;
+//          newX = cameraGridY;
+//          newY = 14 - cameraGridX;
+//          cameraGridX = newX;
+//          cameraGridY = newY;
+//          newX = selectedY;
+//          newY = 14 - selectedX;
+//          selectedX = newX;
+//          selectedY = newY;
+//          std::cout << cameraGridX << " " << cameraGridY << std::endl;
+//          std::cout << "selectedX: " << selectedX << " selectedY" << selectedY << std::endl;
           lastRotation = (int)m_cameraYaw;
           std::cout << "lastRotation: " << lastRotation << "currentAngle" << (int)m_cameraYaw<< std::endl;
 
@@ -635,16 +648,16 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
               rotateMatrixLeft();
               std::cout << "reverse" << std::endl;
               printMazeGrid();
-              newX = 14 - cameraGridY;
-              newY = cameraGridX;
-              cameraGridX = newX;
-              cameraGridY = newY;
-              newX = 14 - selectedY;
-              newY = selectedX;
-              selectedX = newX;
-              selectedY = newY;
-              std::cout << cameraGridX << " " << cameraGridY << std::endl;
-              std::cout << "selectedX: "<<selectedX << " selectedY" << selectedY<<std::endl;
+//              newX = 14 - cameraGridY;
+//              newY = cameraGridX;
+//              cameraGridX = newX;
+//              cameraGridY = newY;
+//              newX = 14 - selectedY;
+//              newY = selectedX;
+//              selectedX = newX;
+//              selectedY = newY;
+//              std::cout << cameraGridX << " " << cameraGridY << std::endl;
+//              std::cout << "selectedX: "<<selectedX << " selectedY" << selectedY<<std::endl;
               lastRotation = (int)m_cameraYaw;
               std::cout << "lastRotation: " << lastRotation << "currentAngle" << (int)m_cameraYaw<< std::endl;
           }
@@ -711,6 +724,9 @@ void NGLScene::timerEvent(QTimerEvent *_event)
 
 void NGLScene::rotateMatrixRight()
 {
+    int newX;
+    int newY;
+
     int n = mazeGrid.size();
     QVector<QVector<int>> newGrid(n, QVector<int>(n,0));
 
@@ -722,10 +738,23 @@ void NGLScene::rotateMatrixRight()
         }
     }
     mazeGrid = newGrid;
+    newX = cameraGridY;
+    newY = 14 - cameraGridX;
+    cameraGridX = newX;
+    cameraGridY = newY;
+    newX = selectedY;
+    newY = 14 - selectedX;
+    selectedX = newX;
+    selectedY = newY;
+    std::cout << cameraGridX << " " << cameraGridY << std::endl;
+    std::cout << "selectedX: " << selectedX << " selectedY" << selectedY << std::endl;
 }
 
 void NGLScene::rotateMatrixLeft()
 {
+    int newX;
+    int newY;
+
     int n = mazeGrid.size();
     QVector<QVector<int>> newGrid(n, QVector<int>(n,0));
 
@@ -737,6 +766,16 @@ void NGLScene::rotateMatrixLeft()
         }
     }
     mazeGrid = newGrid;
+    newX = 14 - cameraGridY;
+    newY = cameraGridX;
+    cameraGridX = newX;
+    cameraGridY = newY;
+    newX = 14 - selectedY;
+    newY = selectedX;
+    selectedX = newX;
+    selectedY = newY;
+    std::cout << cameraGridX << " " << cameraGridY << std::endl;
+    std::cout << "selectedX: "<<selectedX << " selectedY" << selectedY<<std::endl;
 }
 
 void NGLScene::flipMatrix()

@@ -510,6 +510,7 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     static bool flip = true;
     float xPosition;
     float zPosition;
+   // int currentAngle = (int)m_cameraYaw;
     //float cameraRef = m_cameraYaw;
 
     if(!hasRun)
@@ -538,7 +539,10 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
           m_cameraYaw = 270;
       else
           m_cameraYaw = 0;
+      lastRotation = (int)m_cameraYaw;
       updateCameraPosition();
+      std::cout << "lastRotation: " << lastRotation << "currentAngle" << (int)m_cameraYaw<< std::endl;
+      printMazeGrid();
       std::cout << "newm_cameraYaw" << m_cameraYaw << std::endl;
 
       if((int)m_cameraYaw % 90 == 0)
@@ -599,7 +603,8 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
       m_cameraYaw -= rotateSpeed;
       //m_cameraYaw -= rotateSpeed * moveSpeed; -> trying to stop rotation every 90 degrees
       updateCameraPosition();
-      if((int)m_cameraYaw % 90 == 0)
+      std::cout << "lastRotation: " << lastRotation << "currentAngle" << m_cameraYaw<< std::endl;
+      if((int)m_cameraYaw % 90 == 0 && lastRotation != (int)m_cameraYaw)
       {
           rotateMatrixRight();
           std::cout << "reverse" << std::endl;
@@ -613,14 +618,18 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
           selectedX = newX;
           selectedY = newY;
           std::cout << cameraGridX << " " << cameraGridY << std::endl;
-          std::cout << "selectedX: "<<selectedX << " selectedY" << selectedY<<std::endl;
+          std::cout << "selectedX: " << selectedX << " selectedY" << selectedY << std::endl;
+          lastRotation = (int)m_cameraYaw;
+          std::cout << "lastRotation: " << lastRotation << "currentAngle" << (int)m_cameraYaw<< std::endl;
+
       }
       //dy = 1;
       break;
   case Qt::Key_Right:
       m_cameraYaw += rotateSpeed;
       updateCameraPosition();
-          if((int)m_cameraYaw % 90 == 0)
+          std::cout << "lastRotation: " << lastRotation << "currentAngle" << m_cameraYaw<< std::endl;
+          if((int)m_cameraYaw % 90 == 0 && lastRotation != (int)m_cameraYaw)
               // if(m_cameraYaw == 0 || m_cameraYaw == 90 || m_cameraYaw == 180 || m_cameraYaw == 270 || m_cameraYaw == 360)
           {
               rotateMatrixLeft();
@@ -636,6 +645,8 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
               selectedY = newY;
               std::cout << cameraGridX << " " << cameraGridY << std::endl;
               std::cout << "selectedX: "<<selectedX << " selectedY" << selectedY<<std::endl;
+              lastRotation = (int)m_cameraYaw;
+              std::cout << "lastRotation: " << lastRotation << "currentAngle" << (int)m_cameraYaw<< std::endl;
           }
       //dy = -1;
       break;

@@ -7,6 +7,9 @@
 #include <memory>
 #include "includes.h"
 
+#include <QObject>
+#include <QOpenGLWidget>
+
 //----------------------------------------------------------------------------------------------------------------------
 /// @file NGLScene.h
 /// @brief this class inherits from the Qt OpenGLWindow and allows us to use NGL to draw OpenGL
@@ -22,6 +25,9 @@
 
 class NGLScene : public QOpenGLWindow
 {
+    Q_OBJECT
+
+
   public:
     //----------------------------------------------------------------------------------------------------------------------
     /// @brief ctor for our NGL drawing class
@@ -59,6 +65,7 @@ class NGLScene : public QOpenGLWindow
     void findPathCorners();
     void placeSphere(float x, float y, float z);
     void findShortestPath();
+
 
 private:
     //----------------------------------------------------------------------------------------------------------------------
@@ -175,6 +182,7 @@ private:
     float sphereInitialxPosition;
     float sphereInitialzPosition;
 };
+
 
 
 

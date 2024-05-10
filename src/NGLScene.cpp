@@ -493,7 +493,7 @@ void removeCoins(float x, float z)
     {
         if(it->getPosition().m_x == x && it->getPosition().m_z == z)
         {
-            coinTransformations.erase(it);
+            it = coinTransformations.erase(it);
         }
     }
 }

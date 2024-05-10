@@ -33,3 +33,6 @@
 #include <ngl/Texture.h>
 
 
+#include <QApplication>
+
+

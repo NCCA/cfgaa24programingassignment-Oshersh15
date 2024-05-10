@@ -172,6 +172,8 @@ private:
     GLenum m_polyMode;
     int lastRotation = 0;
     int Chosen;
+    float sphereInitialxPosition;
+    float sphereInitialzPosition;
 };
 
 

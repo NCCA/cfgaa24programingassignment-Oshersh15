@@ -171,6 +171,7 @@ private:
     GLuint m_textureName;
     GLenum m_polyMode;
     int lastRotation = 0;
+    int Chosen;
 };
 
 

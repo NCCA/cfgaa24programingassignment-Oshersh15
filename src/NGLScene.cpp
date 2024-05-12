@@ -691,107 +691,135 @@ void NGLScene::findShortestPath()
 {
     float distance;
     int chosen;
-    if((int)m_cameraYaw==90 || (int)m_cameraYaw==270)
+    int forwardX, forwardY, backwardX, backwardY, leftX, leftY, rightX, rightY;
+    switch((int)m_cameraYaw)
     {
-        if (mazeGrid[selectedX][selectedY+1] == 0 || mazeGrid[selectedX + 1][selectedY] == 2) {
-            if (mazeGrid[selectedX + 1][selectedY] == 2) {
+        case(90):
+            forwardX = -1; forwardY = 0;
+            backwardX = 1; backwardY = 0;
+            leftX = 0; leftY = 1;
+            rightX = 0; rightY = -1;
+            break;
+        case(180):
+            forwardX = 0; forwardY = -1;
+            backwardX = 0; backwardY = 1;
+            leftX = 1; leftY = 0;
+            rightX = 1; rightY = 0;
+            break;
+        case(270):
+            forwardX = -1; forwardY = 0;
+            backwardX = 1; backwardY = 0;
+            leftX = 0; leftY = 1;
+            rightX = 0; rightY = -1;
+            break;
+        default:
+            forwardX = 0; forwardY = 1;
+            backwardX = 0; backwardY = -1;
+            leftX = -1; leftY = 0;
+            rightX = 1; rightY = 0;
+            break;
+    }
+ //   if((int)m_cameraYaw==90 || (int)m_cameraYaw==270)
+ //   {
+        if (mazeGrid[selectedX + rightX][selectedY + rightY] == 0 || mazeGrid[selectedX + rightX][selectedY + rightY] == 2) {
+            if (mazeGrid[selectedX + rightX][selectedY + rightY] == 2) {
                 setTitle("Game Over");
             }
-            distance = sqrt(pow(((selectedX + 1) - cameraGridX), 2) + pow((selectedY - cameraGridY), 2));
+            distance = sqrt(pow(((selectedX + rightX) - cameraGridX), 2) + pow((selectedY + rightY - cameraGridY), 2));
             if (shortest > distance) {
                 shortest = distance;
-                currentShortestX = selectedX + 1;
-                currentShortestY = selectedY;
+                currentShortestX = selectedX + rightX;
+                currentShortestY = selectedY + rightY;
                 chosen = 1;
             }
         }
-        if (mazeGrid[selectedX][selectedY-1] == 0 || mazeGrid[selectedX - 1][selectedY] == 2) {
-            if (mazeGrid[selectedX - 1][selectedY] == 2) {
+        if (mazeGrid[selectedX + leftX][selectedY + leftY] == 0 || mazeGrid[selectedX + leftX][selectedY + leftY] == 2) {
+            if (mazeGrid[selectedX + leftX][selectedY + leftY] == 2) {
                 setTitle("Game Over");
             }
-            distance = sqrt(pow(((selectedX - 1) - cameraGridX), 2) + pow((selectedY - cameraGridY), 2));
+            distance = sqrt(pow(((selectedX + leftX) - cameraGridX), 2) + pow((selectedY + leftY - cameraGridY), 2));
             if (shortest > distance) {
                 shortest = distance;
-                currentShortestX = selectedX - 1;
-                currentShortestY = selectedY;
+                currentShortestX = selectedX + leftX;
+                currentShortestY = selectedY + leftY;
                 chosen = 2;
             }
         }
-        if (mazeGrid[selectedX+1][selectedY] == 0 || mazeGrid[selectedX][selectedY + 1] == 2) {
-            if (mazeGrid[selectedX][selectedY + 1] == 2) {
+        if (mazeGrid[selectedX + forwardX][selectedY + forwardY] == 0 || mazeGrid[selectedX + forwardX][selectedY + forwardY] == 2) {
+            if (mazeGrid[selectedX + forwardX][selectedY + forwardY] == 2) {
                 setTitle("Game Over");
             }
-            distance = sqrt(pow((selectedX - cameraGridX), 2) + pow(((selectedY + 1) - cameraGridY), 2));
+            distance = sqrt(pow((selectedX +forwardX - cameraGridX), 2) + pow(((selectedY + forwardY) - cameraGridY), 2));
             if (shortest > distance) {
                 shortest = distance;
-                currentShortestX = selectedX;
-                currentShortestY = selectedY + 1;
+                currentShortestX = selectedX + forwardX;
+                currentShortestY = selectedY + forwardY;
                 chosen = 3;
             }
         }
-        if (mazeGrid[selectedX-1][selectedY] == 0 || mazeGrid[selectedX][selectedY - 1] == 2) {
-            if (mazeGrid[selectedX][selectedY - 1] == 2) {
+        if (mazeGrid[selectedX + backwardX][selectedY + backwardY] == 0 || mazeGrid[selectedX + backwardX][selectedY + backwardY] == 2) {
+            if (mazeGrid[selectedX + backwardX][selectedY + backwardY] == 2) {
                 setTitle("Game Over");
             }
-            distance = sqrt(pow((selectedX - cameraGridX), 2) + pow(((selectedY - 1) - cameraGridY), 2));
+            distance = sqrt(pow((selectedX + backwardX - cameraGridX), 2) + pow(((selectedY + backwardY) - cameraGridY), 2));
             if (shortest > distance) {
                 shortest = distance;
-                currentShortestX = selectedX;
-                currentShortestY = selectedY - 1;
+                currentShortestX = selectedX + backwardX;
+                currentShortestY = selectedY + backwardY;
                 chosen = 4;
             }
         }
-    }
-    else {
-        if (mazeGrid[selectedX + 1][selectedY] == 0 || mazeGrid[selectedX + 1][selectedY] == 2) {
-            if (mazeGrid[selectedX + 1][selectedY] == 2) {
-                setTitle("Game Over");
-            }
-            distance = sqrt(pow(((selectedX + 1) - cameraGridX), 2) + pow((selectedY - cameraGridY), 2));
-            if (shortest > distance) {
-                shortest = distance;
-                currentShortestX = selectedX + 1;
-                currentShortestY = selectedY;
-                chosen = 1;
-            }
-        }
-        if (mazeGrid[selectedX - 1][selectedY] == 0 || mazeGrid[selectedX - 1][selectedY] == 2) {
-            if (mazeGrid[selectedX - 1][selectedY] == 2) {
-                setTitle("Game Over");
-            }
-            distance = sqrt(pow(((selectedX - 1) - cameraGridX), 2) + pow((selectedY - cameraGridY), 2));
-            if (shortest > distance) {
-                shortest = distance;
-                currentShortestX = selectedX - 1;
-                currentShortestY = selectedY;
-                chosen = 2;
-            }
-        }
-        if (mazeGrid[selectedX][selectedY + 1] == 0 || mazeGrid[selectedX][selectedY + 1] == 2) {
-            if (mazeGrid[selectedX][selectedY + 1] == 2) {
-                setTitle("Game Over");
-            }
-            distance = sqrt(pow((selectedX - cameraGridX), 2) + pow(((selectedY + 1) - cameraGridY), 2));
-            if (shortest > distance) {
-                shortest = distance;
-                currentShortestX = selectedX;
-                currentShortestY = selectedY + 1;
-                chosen = 3;
-            }
-        }
-        if (mazeGrid[selectedX][selectedY - 1] == 0 || mazeGrid[selectedX][selectedY - 1] == 2) {
-            if (mazeGrid[selectedX][selectedY - 1] == 2) {
-                setTitle("Game Over");
-            }
-            distance = sqrt(pow((selectedX - cameraGridX), 2) + pow(((selectedY - 1) - cameraGridY), 2));
-            if (shortest > distance) {
-                shortest = distance;
-                currentShortestX = selectedX;
-                currentShortestY = selectedY - 1;
-                chosen = 4;
-            }
-        }
-    }
+//    }
+//    else {
+//        if (mazeGrid[selectedX + 1][selectedY] == 0 || mazeGrid[selectedX + 1][selectedY] == 2) {
+//            if (mazeGrid[selectedX + 1][selectedY] == 2) {
+//                setTitle("Game Over");
+//            }
+//            distance = sqrt(pow(((selectedX + 1) - cameraGridX), 2) + pow((selectedY - cameraGridY), 2));
+//            if (shortest > distance) {
+//                shortest = distance;
+//                currentShortestX = selectedX + 1;
+//                currentShortestY = selectedY;
+//                chosen = 1;
+//            }
+//        }
+//        if (mazeGrid[selectedX - 1][selectedY] == 0 || mazeGrid[selectedX - 1][selectedY] == 2) {
+//            if (mazeGrid[selectedX - 1][selectedY] == 2) {
+//                setTitle("Game Over");
+//            }
+//            distance = sqrt(pow(((selectedX - 1) - cameraGridX), 2) + pow((selectedY - cameraGridY), 2));
+//            if (shortest > distance) {
+//                shortest = distance;
+//                currentShortestX = selectedX - 1;
+//                currentShortestY = selectedY;
+//                chosen = 2;
+//            }
+//        }
+//        if (mazeGrid[selectedX][selectedY + 1] == 0 || mazeGrid[selectedX][selectedY + 1] == 2) {
+//            if (mazeGrid[selectedX][selectedY + 1] == 2) {
+//                setTitle("Game Over");
+//            }
+//            distance = sqrt(pow((selectedX - cameraGridX), 2) + pow(((selectedY + 1) - cameraGridY), 2));
+//            if (shortest > distance) {
+//                shortest = distance;
+//                currentShortestX = selectedX;
+//                currentShortestY = selectedY + 1;
+//                chosen = 3;
+//            }
+//        }
+//        if (mazeGrid[selectedX][selectedY - 1] == 0 || mazeGrid[selectedX][selectedY - 1] == 2) {
+//            if (mazeGrid[selectedX][selectedY - 1] == 2) {
+//                setTitle("Game Over");
+//            }
+//            distance = sqrt(pow((selectedX - cameraGridX), 2) + pow(((selectedY - 1) - cameraGridY), 2));
+//            if (shortest > distance) {
+//                shortest = distance;
+//                currentShortestX = selectedX;
+//                currentShortestY = selectedY - 1;
+//                chosen = 4;
+//            }
+//        }
+//    }
     std::cout << "sphereInitialxPosition" << sphereInitialxPosition << "sphereInitialzPosition" <<sphereInitialzPosition << std::endl;
     std::cout << "sphereLastxPosition" << sphereLastxPosition << "sphereLastzPosition" <<sphereLastzPosition << std::endl;
     float xPosition;
@@ -829,7 +857,7 @@ void NGLScene::findShortestPath()
                 zPosition = sphereLastzPosition;
                 break;
             case(2):
-                xPosition = sphereLastxPosition + zSpacing;
+                xPosition = sphereLastxPosition - xSpacing;
                 zPosition = sphereLastzPosition;
                 break;
             case(3):
@@ -838,7 +866,7 @@ void NGLScene::findShortestPath()
                 break;
             case(4):
                 xPosition = sphereLastxPosition;
-                zPosition = sphereLastzPosition + xSpacing;
+                zPosition = sphereLastzPosition - zSpacing;
                 break;
             default:
                 break;

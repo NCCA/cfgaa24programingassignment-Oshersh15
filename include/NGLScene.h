@@ -170,8 +170,8 @@ private:
     float shortest = std::numeric_limits<float>::max();
     int currentShortestX;
     int currentShortestY;
-    float sphereLastxPosition = sphereInitialxPosition;
-    float sphereLastzPosition = sphereInitialzPosition;
+    float sphereLastxPosition;
+    float sphereLastzPosition;
     GLuint m_textureName;
     GLenum m_polyMode;
     int lastRotation = 0;

@@ -685,6 +685,7 @@ void NGLScene::rotateMatrixLeft()
 void NGLScene::findShortestPath()
 {
     float distance;
+    int chosen;
     if(mazeGrid[selectedX+1][selectedY] == 0 || mazeGrid[selectedX+1][selectedY] == 2)
     {
         if(mazeGrid[selectedX+1][selectedY] == 2)
@@ -697,6 +698,7 @@ void NGLScene::findShortestPath()
             shortest = distance;
             currentShortestX = selectedX + 1;
             currentShortestY = selectedY;
+            chosen = 1;
         }
     }
     if(mazeGrid[selectedX-1][selectedY] == 0 || mazeGrid[selectedX-1][selectedY] == 2)
@@ -711,6 +713,7 @@ void NGLScene::findShortestPath()
             shortest = distance;
             currentShortestX = selectedX - 1;
             currentShortestY = selectedY;
+            chosen = 2;
         }
     }
     if(mazeGrid[selectedX][selectedY+1] == 0 || mazeGrid[selectedX][selectedY+1] == 2)
@@ -725,6 +728,7 @@ void NGLScene::findShortestPath()
             shortest = distance;
             currentShortestX = selectedX;
             currentShortestY = selectedY + 1;
+            chosen = 3;
         }
     }
     if(mazeGrid[selectedX][selectedY-1] == 0 || mazeGrid[selectedX][selectedY-1] == 2)
@@ -739,37 +743,38 @@ void NGLScene::findShortestPath()
             shortest = distance;
             currentShortestX = selectedX;
             currentShortestY = selectedY - 1;
+            chosen = 4;
         }
     }
     std::cout << "currentShortestX" << currentShortestX << "currentShortestY" <<currentShortestY << std::endl;
     float xPosition;
     float zPosition;
-    switch((int)m_cameraYaw)
+    switch(chosen)
     {
-        case(90):
+        case(1):
             xPosition = sphereLastxPosition;
             zPosition = sphereLastzPosition + xSpacing;
             std::cout << "xPosition: " << xPosition << " zPosition: " << zPosition << std::endl;
             break;
-        case(180):
+        case(2):
             xPosition = sphereLastxPosition + zSpacing;
             zPosition = sphereLastzPosition;
             std::cout << "xPosition: " << xPosition << " zPosition: " << zPosition << std::endl;
             break;
-        case(270):
+        case(3):
+            xPosition = sphereLastxPosition;
+            zPosition = sphereLastzPosition + xSpacing;
+            std::cout << "xPosition: " << xPosition << " zPosition: " << zPosition << std::endl;
+            break;
+        default:
             xPosition = sphereLastxPosition;
             zPosition = sphereLastzPosition + zSpacing;
             std::cout << "xPosition: " << xPosition << " zPosition: " << zPosition << std::endl;
             break;
-        default:
-            xPosition = baseX + currentShortestX * xSpacing;
-            zPosition = baseZ + currentShortestY * zSpacing;
-            std::cout << "xPosition: " << xPosition << " zPosition: " << zPosition << std::endl;
-            break;
     }
+    placeSphere(xPosition, 0.0f, zPosition);
     sphereLastxPosition = xPosition;
     sphereLastzPosition = zPosition;
-    placeSphere(xPosition, 0.0f, zPosition);
     mazeGrid[selectedX][selectedY] = 0;
     selectedX = currentShortestX;
     selectedY = currentShortestY;

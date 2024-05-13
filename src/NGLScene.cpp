@@ -724,6 +724,8 @@ void NGLScene::findShortestPath()
         if (mazeGrid[selectedX + leftX][selectedY + leftY] == 0 || mazeGrid[selectedX + leftX][selectedY + leftY] == 2) {
             if (mazeGrid[selectedX + leftX][selectedY + leftY] == 2) {
                 setTitle("Game Over");
+                update();
+                //std::cout<<"game over"<<std::endl;
             }
             distance = sqrt(pow(((selectedX + leftX) - cameraGridX), 2) + pow((selectedY + leftY - cameraGridY), 2));
             if (shortest > distance) {
@@ -736,6 +738,8 @@ void NGLScene::findShortestPath()
         if (mazeGrid[selectedX + rightX][selectedY + rightY] == 0 || mazeGrid[selectedX + rightX][selectedY + rightY] == 2) {
             if (mazeGrid[selectedX + rightX][selectedY + rightY] == 2) {
                 setTitle("Game Over");
+                update();
+                //std::cout<<"game over"<<std::endl;
             }
             distance = sqrt(pow(((selectedX + rightX) - cameraGridX), 2) + pow((selectedY + rightY - cameraGridY), 2));
             if (shortest > distance) {
@@ -748,6 +752,8 @@ void NGLScene::findShortestPath()
         if (mazeGrid[selectedX + forwardX][selectedY + forwardY] == 0 || mazeGrid[selectedX + forwardX][selectedY + forwardY] == 2) {
             if (mazeGrid[selectedX + forwardX][selectedY + forwardY] == 2) {
                 setTitle("Game Over");
+                update();
+                //std::cout<<"game over"<<std::endl;
             }
             distance = sqrt(pow((selectedX +forwardX - cameraGridX), 2) + pow(((selectedY + forwardY) - cameraGridY), 2));
             if (shortest > distance) {
@@ -760,6 +766,8 @@ void NGLScene::findShortestPath()
         if (mazeGrid[selectedX + backwardX][selectedY + backwardY] == 0 || mazeGrid[selectedX + backwardX][selectedY + backwardY] == 2) {
             if (mazeGrid[selectedX + backwardX][selectedY + backwardY] == 2) {
                 setTitle("Game Over");
+                update();
+                //std::cout<<"game over"<<std::endl;
             }
             distance = sqrt(pow((selectedX + backwardX - cameraGridX), 2) + pow(((selectedY + backwardY) - cameraGridY), 2));
             if (shortest > distance) {

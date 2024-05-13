@@ -520,6 +520,7 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
             }
         }
         lastRotation = (int)m_cameraYaw;
+        findShortestPath();
         if (mazeGrid[cameraGridX + dx][cameraGridY + dy] != 1 && move)
         {
             mazeGrid[cameraGridX][cameraGridY] = 0;
@@ -552,7 +553,6 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
             updateCameraPosition();
             mazeGrid[cameraGridX][cameraGridY] = 2;
             std::cout << cameraGridX << " " << cameraGridY << std::endl;
-            findShortestPath();
             printMazeGrid();
         }
       }
@@ -703,36 +703,24 @@ void NGLScene::findShortestPath()
         case(180):
             forwardX = 0; forwardY = -1;
             backwardX = 0; backwardY = 1;
-            leftX = 1; leftY = 0;
+            leftX = -1; leftY = 0;
             rightX = 1; rightY = 0;
             break;
         case(270):
-            forwardX = -1; forwardY = 0;
-            backwardX = 1; backwardY = 0;
-            leftX = 0; leftY = 1;
-            rightX = 0; rightY = -1;
+            forwardX = 1; forwardY = 0;
+            backwardX = -1; backwardY = 0;
+            leftX = 0; leftY = -1;
+            rightX = 0; rightY = 1;
             break;
         default:
             forwardX = 0; forwardY = 1;
             backwardX = 0; backwardY = -1;
-            leftX = -1; leftY = 0;
-            rightX = 1; rightY = 0;
+            leftX = 1; leftY = 0;
+            rightX = -1; rightY = 0;
             break;
     }
  //   if((int)m_cameraYaw==90 || (int)m_cameraYaw==270)
  //   {
-        if (mazeGrid[selectedX + rightX][selectedY + rightY] == 0 || mazeGrid[selectedX + rightX][selectedY + rightY] == 2) {
-            if (mazeGrid[selectedX + rightX][selectedY + rightY] == 2) {
-                setTitle("Game Over");
-            }
-            distance = sqrt(pow(((selectedX + rightX) - cameraGridX), 2) + pow((selectedY + rightY - cameraGridY), 2));
-            if (shortest > distance) {
-                shortest = distance;
-                currentShortestX = selectedX + rightX;
-                currentShortestY = selectedY + rightY;
-                chosen = 1;
-            }
-        }
         if (mazeGrid[selectedX + leftX][selectedY + leftY] == 0 || mazeGrid[selectedX + leftX][selectedY + leftY] == 2) {
             if (mazeGrid[selectedX + leftX][selectedY + leftY] == 2) {
                 setTitle("Game Over");
@@ -742,6 +730,18 @@ void NGLScene::findShortestPath()
                 shortest = distance;
                 currentShortestX = selectedX + leftX;
                 currentShortestY = selectedY + leftY;
+                chosen = 1;
+            }
+        }
+        if (mazeGrid[selectedX + rightX][selectedY + rightY] == 0 || mazeGrid[selectedX + rightX][selectedY + rightY] == 2) {
+            if (mazeGrid[selectedX + rightX][selectedY + rightY] == 2) {
+                setTitle("Game Over");
+            }
+            distance = sqrt(pow(((selectedX + rightX) - cameraGridX), 2) + pow((selectedY + rightY - cameraGridY), 2));
+            if (shortest > distance) {
+                shortest = distance;
+                currentShortestX = selectedX + rightX;
+                currentShortestY = selectedY + rightY;
                 chosen = 2;
             }
         }

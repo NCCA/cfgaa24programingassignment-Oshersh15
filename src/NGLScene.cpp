@@ -1,4 +1,8 @@
 #include "includes.h"
+#include <QApplication>
+#include <QMessageBox>
+#include <QLabel>
+#include <QPixmap>
 
 NGLScene::NGLScene()
 {
@@ -523,6 +527,18 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
         findShortestPath();
         if (mazeGrid[cameraGridX + dx][cameraGridY + dy] != 1 && move)
         {
+            if(mazeGrid[cameraGridX + dx * 2][cameraGridY + dy] == 3)
+            {
+                QPixmap pixmap("image/game.jpg");
+                QLabel *label = new QLabel;
+                label->setPixmap(pixmap);
+                //    label->setGeometry(100,100,400,300);
+                label->resize(pixmap.size());
+                //label->setWindowFlag(Qt::Window);
+                label->show();
+                //QMessageBox::critical(nullptr, "Game Over","", QMessageBox::Ok);
+                update();
+            }
             mazeGrid[cameraGridX][cameraGridY] = 0;
             cameraGridX += dx;
             switch((int)m_cameraYaw)
@@ -723,7 +739,17 @@ void NGLScene::findShortestPath()
  //   {
         if (mazeGrid[selectedX + leftX][selectedY + leftY] == 0 || mazeGrid[selectedX + leftX][selectedY + leftY] == 2) {
             if (mazeGrid[selectedX + leftX][selectedY + leftY] == 2) {
-                setTitle("Game Over");
+//                setTitle("Game Over");
+//                update();
+                //QMessageBox::critical(nullptr, "Game Over","", QMessageBox::Ok);
+                QPixmap pixmap("image/game.jpg");
+                QLabel *label = new QLabel;
+                label->setPixmap(pixmap);
+                //    label->setGeometry(100,100,400,300);
+                label->resize(pixmap.size());
+                //label->setWindowFlag(Qt::Window);
+                label->show();
+                //QMessageBox::critical(nullptr, "Game Over","", QMessageBox::Ok);
                 update();
                 //std::cout<<"game over"<<std::endl;
             }
@@ -737,7 +763,17 @@ void NGLScene::findShortestPath()
         }
         if (mazeGrid[selectedX + rightX][selectedY + rightY] == 0 || mazeGrid[selectedX + rightX][selectedY + rightY] == 2) {
             if (mazeGrid[selectedX + rightX][selectedY + rightY] == 2) {
-                setTitle("Game Over");
+//                setTitle("Game Over");
+//                update();
+                //QMessageBox::critical(nullptr, "Game Over","", QMessageBox::Ok);
+                QPixmap pixmap("image/game.jpg");
+                QLabel *label = new QLabel;
+                label->setPixmap(pixmap);
+                //    label->setGeometry(100,100,400,300);
+                label->resize(pixmap.size());
+                //label->setWindowFlag(Qt::Window);
+                label->show();
+                //QMessageBox::critical(nullptr, "Game Over","", QMessageBox::Ok);
                 update();
                 //std::cout<<"game over"<<std::endl;
             }
@@ -751,7 +787,17 @@ void NGLScene::findShortestPath()
         }
         if (mazeGrid[selectedX + forwardX][selectedY + forwardY] == 0 || mazeGrid[selectedX + forwardX][selectedY + forwardY] == 2) {
             if (mazeGrid[selectedX + forwardX][selectedY + forwardY] == 2) {
-                setTitle("Game Over");
+//                setTitle("Game Over");
+//                update();
+                //QMessageBox::critical(nullptr, "Game Over","", QMessageBox::Ok);
+                QPixmap pixmap("image/game.jpg");
+                QLabel *label = new QLabel;
+                label->setPixmap(pixmap);
+                //    label->setGeometry(100,100,400,300);
+                label->resize(pixmap.size());
+                //label->setWindowFlag(Qt::Window);
+                label->show();
+                //QMessageBox::critical(nullptr, "Game Over","", QMessageBox::Ok);
                 update();
                 //std::cout<<"game over"<<std::endl;
             }
@@ -765,7 +811,17 @@ void NGLScene::findShortestPath()
         }
         if (mazeGrid[selectedX + backwardX][selectedY + backwardY] == 0 || mazeGrid[selectedX + backwardX][selectedY + backwardY] == 2) {
             if (mazeGrid[selectedX + backwardX][selectedY + backwardY] == 2) {
-                setTitle("Game Over");
+//                setTitle("Game Over");
+//                update();
+                //QMessageBox::critical(nullptr, "Game Over","", QMessageBox::Ok);
+                QPixmap pixmap("image/game.jpg");
+                QLabel *label = new QLabel;
+                label->setPixmap(pixmap);
+                //    label->setGeometry(100,100,400,300);
+                label->resize(pixmap.size());
+                //label->setWindowFlag(Qt::Window);
+                label->show();
+                //QMessageBox::critical(nullptr, "Game Over","", QMessageBox::Ok);
                 update();
                 //std::cout<<"game over"<<std::endl;
             }

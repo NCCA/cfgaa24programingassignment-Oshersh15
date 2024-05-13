@@ -583,7 +583,6 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
       m_cameraYaw += rotateSpeed;
       updateCameraPosition();
           if((int)m_cameraYaw % 90 == 0 && lastRotation != (int)m_cameraYaw)
-              // if(m_cameraYaw == 0 || m_cameraYaw == 90 || m_cameraYaw == 180 || m_cameraYaw == 270 || m_cameraYaw == 360)
           {
               rotateMatrixLeft();
               std::cout << "reverse" << std::endl;
@@ -743,8 +742,6 @@ void NGLScene::findShortestPath()
             rightX = -1; rightY = 0;
             break;
     }
- //   if((int)m_cameraYaw==90 || (int)m_cameraYaw==270)
- //   {
         if (mazeGrid[selectedX + leftX][selectedY + leftY] == 0 || mazeGrid[selectedX + leftX][selectedY + leftY] == 2) {
             if (mazeGrid[selectedX + leftX][selectedY + leftY] == 2)
             {

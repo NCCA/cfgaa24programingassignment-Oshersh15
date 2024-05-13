@@ -527,49 +527,43 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
         findShortestPath();
         if (mazeGrid[cameraGridX + dx][cameraGridY + dy] != 1 && move)
         {
-            if(mazeGrid[cameraGridX + dx * 2][cameraGridY + dy] == 3)
+            if(mazeGrid[cameraGridX + 2][cameraGridY + dy] == 3)
             {
-                QPixmap pixmap("image/game.jpg");
-                QLabel *label = new QLabel;
-                label->setPixmap(pixmap);
-                //    label->setGeometry(100,100,400,300);
-                label->resize(pixmap.size());
-                //label->setWindowFlag(Qt::Window);
-                label->show();
-                //QMessageBox::critical(nullptr, "Game Over","", QMessageBox::Ok);
-                update();
+                GameOver();
             }
-            mazeGrid[cameraGridX][cameraGridY] = 0;
-            cameraGridX += dx;
-            switch((int)m_cameraYaw)
+            else
             {
-                case(90):
-                    xPosition = lastxPosition;
-                    zPosition = lastzPosition + xSpacing;
-                    break;
-                case(180):
-                    xPosition = lastxPosition + zSpacing;
-                    zPosition = lastzPosition;
-                    break;
-                case(270):
-                    xPosition = lastxPosition;
-                    zPosition = lastzPosition + zSpacing;
-                    break;
-                default:
-                    xPosition = baseX + (float) cameraGridX * xSpacing;
-                    zPosition = baseZ + (float) cameraGridY * zSpacing;
-                    break;
-            }
-            std::cout<<"cameraxPosition"<<xPosition<<"cameraxPosition"<<zPosition<<std::endl;
-            removeCoins(lastxPosition, lastzPosition);
-            lastxPosition = xPosition;
-            lastzPosition = zPosition;
-            m_cameraPosition = ngl::Vec3(xPosition, 0.2, zPosition);
+                mazeGrid[cameraGridX][cameraGridY] = 0;
+                cameraGridX += dx;
+                switch ((int) m_cameraYaw) {
+                    case (90):
+                        xPosition = lastxPosition;
+                        zPosition = lastzPosition + xSpacing;
+                        break;
+                    case (180):
+                        xPosition = lastxPosition + zSpacing;
+                        zPosition = lastzPosition;
+                        break;
+                    case (270):
+                        xPosition = lastxPosition;
+                        zPosition = lastzPosition + zSpacing;
+                        break;
+                    default:
+                        xPosition = baseX + (float) cameraGridX * xSpacing;
+                        zPosition = baseZ + (float) cameraGridY * zSpacing;
+                        break;
+                }
+                std::cout << "cameraxPosition" << xPosition << "cameraxPosition" << zPosition << std::endl;
+                removeCoins(lastxPosition, lastzPosition);
+                lastxPosition = xPosition;
+                lastzPosition = zPosition;
+                m_cameraPosition = ngl::Vec3(xPosition, 0.2, zPosition);
 
-            updateCameraPosition();
-            mazeGrid[cameraGridX][cameraGridY] = 2;
-            std::cout << cameraGridX << " " << cameraGridY << std::endl;
-            printMazeGrid();
+                updateCameraPosition();
+                mazeGrid[cameraGridX][cameraGridY] = 2;
+                std::cout << cameraGridX << " " << cameraGridY << std::endl;
+                printMazeGrid();
+            }
         }
       }
     break;
@@ -615,6 +609,20 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     break;
   }
   update();
+}
+
+void NGLScene::GameOver()
+{
+    QPixmap pixmap("image/game.jpg");
+    QLabel *label = new QLabel;
+    label->setPixmap(pixmap);
+    label->resize(pixmap.size());
+    label->setScaledContents(true);
+    label->resize(300, 300);
+    label->move(500,500);
+    label->setWindowTitle("");
+    label->show();
+    update();
 }
 
 void NGLScene::printMazeGrid() {
@@ -738,20 +746,9 @@ void NGLScene::findShortestPath()
  //   if((int)m_cameraYaw==90 || (int)m_cameraYaw==270)
  //   {
         if (mazeGrid[selectedX + leftX][selectedY + leftY] == 0 || mazeGrid[selectedX + leftX][selectedY + leftY] == 2) {
-            if (mazeGrid[selectedX + leftX][selectedY + leftY] == 2) {
-//                setTitle("Game Over");
-//                update();
-                //QMessageBox::critical(nullptr, "Game Over","", QMessageBox::Ok);
-                QPixmap pixmap("image/game.jpg");
-                QLabel *label = new QLabel;
-                label->setPixmap(pixmap);
-                //    label->setGeometry(100,100,400,300);
-                label->resize(pixmap.size());
-                //label->setWindowFlag(Qt::Window);
-                label->show();
-                //QMessageBox::critical(nullptr, "Game Over","", QMessageBox::Ok);
-                update();
-                //std::cout<<"game over"<<std::endl;
+            if (mazeGrid[selectedX + leftX][selectedY + leftY] == 2)
+            {
+                GameOver();
             }
             distance = sqrt(pow(((selectedX + leftX) - cameraGridX), 2) + pow((selectedY + leftY - cameraGridY), 2));
             if (shortest > distance) {
@@ -762,20 +759,9 @@ void NGLScene::findShortestPath()
             }
         }
         if (mazeGrid[selectedX + rightX][selectedY + rightY] == 0 || mazeGrid[selectedX + rightX][selectedY + rightY] == 2) {
-            if (mazeGrid[selectedX + rightX][selectedY + rightY] == 2) {
-//                setTitle("Game Over");
-//                update();
-                //QMessageBox::critical(nullptr, "Game Over","", QMessageBox::Ok);
-                QPixmap pixmap("image/game.jpg");
-                QLabel *label = new QLabel;
-                label->setPixmap(pixmap);
-                //    label->setGeometry(100,100,400,300);
-                label->resize(pixmap.size());
-                //label->setWindowFlag(Qt::Window);
-                label->show();
-                //QMessageBox::critical(nullptr, "Game Over","", QMessageBox::Ok);
-                update();
-                //std::cout<<"game over"<<std::endl;
+            if (mazeGrid[selectedX + rightX][selectedY + rightY] == 2)
+            {
+                GameOver();
             }
             distance = sqrt(pow(((selectedX + rightX) - cameraGridX), 2) + pow((selectedY + rightY - cameraGridY), 2));
             if (shortest > distance) {
@@ -786,20 +772,9 @@ void NGLScene::findShortestPath()
             }
         }
         if (mazeGrid[selectedX + forwardX][selectedY + forwardY] == 0 || mazeGrid[selectedX + forwardX][selectedY + forwardY] == 2) {
-            if (mazeGrid[selectedX + forwardX][selectedY + forwardY] == 2) {
-//                setTitle("Game Over");
-//                update();
-                //QMessageBox::critical(nullptr, "Game Over","", QMessageBox::Ok);
-                QPixmap pixmap("image/game.jpg");
-                QLabel *label = new QLabel;
-                label->setPixmap(pixmap);
-                //    label->setGeometry(100,100,400,300);
-                label->resize(pixmap.size());
-                //label->setWindowFlag(Qt::Window);
-                label->show();
-                //QMessageBox::critical(nullptr, "Game Over","", QMessageBox::Ok);
-                update();
-                //std::cout<<"game over"<<std::endl;
+            if (mazeGrid[selectedX + forwardX][selectedY + forwardY] == 2)
+            {
+                GameOver();
             }
             distance = sqrt(pow((selectedX +forwardX - cameraGridX), 2) + pow(((selectedY + forwardY) - cameraGridY), 2));
             if (shortest > distance) {
@@ -810,20 +785,9 @@ void NGLScene::findShortestPath()
             }
         }
         if (mazeGrid[selectedX + backwardX][selectedY + backwardY] == 0 || mazeGrid[selectedX + backwardX][selectedY + backwardY] == 2) {
-            if (mazeGrid[selectedX + backwardX][selectedY + backwardY] == 2) {
-//                setTitle("Game Over");
-//                update();
-                //QMessageBox::critical(nullptr, "Game Over","", QMessageBox::Ok);
-                QPixmap pixmap("image/game.jpg");
-                QLabel *label = new QLabel;
-                label->setPixmap(pixmap);
-                //    label->setGeometry(100,100,400,300);
-                label->resize(pixmap.size());
-                //label->setWindowFlag(Qt::Window);
-                label->show();
-                //QMessageBox::critical(nullptr, "Game Over","", QMessageBox::Ok);
-                update();
-                //std::cout<<"game over"<<std::endl;
+            if (mazeGrid[selectedX + backwardX][selectedY + backwardY] == 2)
+            {
+                GameOver();
             }
             distance = sqrt(pow((selectedX + backwardX - cameraGridX), 2) + pow(((selectedY + backwardY) - cameraGridY), 2));
             if (shortest > distance) {
@@ -833,87 +797,10 @@ void NGLScene::findShortestPath()
                 chosen = 4;
             }
         }
-//    }
-//    else {
-//        if (mazeGrid[selectedX + 1][selectedY] == 0 || mazeGrid[selectedX + 1][selectedY] == 2) {
-//            if (mazeGrid[selectedX + 1][selectedY] == 2) {
-//                setTitle("Game Over");
-//            }
-//            distance = sqrt(pow(((selectedX + 1) - cameraGridX), 2) + pow((selectedY - cameraGridY), 2));
-//            if (shortest > distance) {
-//                shortest = distance;
-//                currentShortestX = selectedX + 1;
-//                currentShortestY = selectedY;
-//                chosen = 1;
-//            }
-//        }
-//        if (mazeGrid[selectedX - 1][selectedY] == 0 || mazeGrid[selectedX - 1][selectedY] == 2) {
-//            if (mazeGrid[selectedX - 1][selectedY] == 2) {
-//                setTitle("Game Over");
-//            }
-//            distance = sqrt(pow(((selectedX - 1) - cameraGridX), 2) + pow((selectedY - cameraGridY), 2));
-//            if (shortest > distance) {
-//                shortest = distance;
-//                currentShortestX = selectedX - 1;
-//                currentShortestY = selectedY;
-//                chosen = 2;
-//            }
-//        }
-//        if (mazeGrid[selectedX][selectedY + 1] == 0 || mazeGrid[selectedX][selectedY + 1] == 2) {
-//            if (mazeGrid[selectedX][selectedY + 1] == 2) {
-//                setTitle("Game Over");
-//            }
-//            distance = sqrt(pow((selectedX - cameraGridX), 2) + pow(((selectedY + 1) - cameraGridY), 2));
-//            if (shortest > distance) {
-//                shortest = distance;
-//                currentShortestX = selectedX;
-//                currentShortestY = selectedY + 1;
-//                chosen = 3;
-//            }
-//        }
-//        if (mazeGrid[selectedX][selectedY - 1] == 0 || mazeGrid[selectedX][selectedY - 1] == 2) {
-//            if (mazeGrid[selectedX][selectedY - 1] == 2) {
-//                setTitle("Game Over");
-//            }
-//            distance = sqrt(pow((selectedX - cameraGridX), 2) + pow(((selectedY - 1) - cameraGridY), 2));
-//            if (shortest > distance) {
-//                shortest = distance;
-//                currentShortestX = selectedX;
-//                currentShortestY = selectedY - 1;
-//                chosen = 4;
-//            }
-//        }
-//    }
     std::cout << "sphereInitialxPosition" << sphereInitialxPosition << "sphereInitialzPosition" <<sphereInitialzPosition << std::endl;
     std::cout << "sphereLastxPosition" << sphereLastxPosition << "sphereLastzPosition" <<sphereLastzPosition << std::endl;
     float xPosition;
     float zPosition;
-//    if((int)m_cameraYaw==90 || (int)m_cameraYaw==270)
-//    {
-//        switch(chosen)
-//        {
-//            case(1):
-//                xPosition = sphereLastxPosition;
-//                zPosition = sphereLastzPosition + zSpacing;
-//                break;
-//            case(2):
-//                xPosition = sphereLastxPosition;
-//                zPosition = sphereLastzPosition + xSpacing;
-//                break;
-//            case(3):
-//                xPosition = sphereLastxPosition + xSpacing;
-//                zPosition = sphereLastzPosition;
-//                break;
-//            case(4):
-//                xPosition = sphereLastxPosition + zSpacing;
-//                zPosition = sphereLastzPosition;
-//                break;
-//            default:
-//                break;
-//        }
-//    }
-//    else
-//    {
         switch(chosen)
         {
             case(1):
@@ -935,7 +822,6 @@ void NGLScene::findShortestPath()
             default:
                 break;
         }
-    //}
     std::cout << "xPosition: " << xPosition << " zPosition: " << zPosition << std::endl;
     std::cout << "chosen: " << chosen << std::endl;
     placeSphere(xPosition, 0.0f, zPosition);

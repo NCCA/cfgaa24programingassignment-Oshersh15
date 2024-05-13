@@ -62,6 +62,7 @@ class NGLScene : public QOpenGLWindow
     void findPathCorners();
     void placeSphere(float x, float y, float z);
     void findShortestPath();
+    void GameOver();
 
 
 private:

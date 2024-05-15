@@ -29,9 +29,9 @@ The game first sets up the OpenGL environment, loads the maze layout, initialise
  
    - **Key control** - I have implemented camera movement controlled by keys and set the initial camera position in the most central path. The camera position is represented by the number 2 within the array. The camera moves forward only, and rotations are required to change direction. Rotations are restricled to exactly 90-degree increments to ensure that movements align strictly with the grid so after a rotation, when to user wants to proceed forward, the camera angle will snap to the closesnt 90-degree increment.
 
-    - **Collision Detection** - Before each movement, collision detection checks are performed to ensure the path is clear. The array is used to verify whether the next step  is a wall (1) or a path (0). If it is a wall it will remain in place and if it is a path it will move.
+ - **Collision Detection** - Before each movement, collision detection checks are performed to ensure the path is clear. The array is used to verify whether the next step  is a wall (1) or a path (0). If it is a wall it will remain in place and if it is a path it will move.
 
-    - **Ghost** - A ghost, represented as a sphere, is initially placed in a random corner of the maze. Then, it actively chases the player by calculating possible paths from its current position and the distance from the player and chooses the next step that will minimize the most distance to the player. The game ends when the ghost gets to the player and concludes with a "Game Over" message. 
+ - **Ghost** - A ghost, represented as a sphere, is initially placed in a random corner of the maze. Then, it actively chases the player by calculating possible paths from its current position and the distance from the player and chooses the next step that will minimize the most distance to the player. The game ends when the ghost gets to the player and concludes with a "Game Over" message. 
 
     <div style="display: flex; justify-content: space-around; align-items: center;">
   <img src="https://github.com/NCCA/cfgaa24programingassignment-Oshersh15/blob/main/image/game.jpg" alt="Maze Image 1" width="300"/>
@@ -50,7 +50,7 @@ The game first sets up the OpenGL environment, loads the maze layout, initialise
    - **Bibliography**
     https://www.enjoyalgorithms.com/blog/rotate-a-matrix-by-90-degrees-in-an-anticlockwise-direction - understanding how matrix rotation works.
 
-    -Most of the materials I used as a reference and for guidance where the materials in Jon Macey's WebPages and the NGL demos on NCCA gitHub, and as I stated before, my starting point was the VAOPrimitives demo.
+    - Most of the materials I used as a reference and for guidance where the materials in Jon Macey's WebPages and the NGL demos on NCCA gitHub, and as I stated before, my starting point was the VAOPrimitives demo.
 
 
 

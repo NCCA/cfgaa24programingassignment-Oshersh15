@@ -36,9 +36,10 @@ The game first sets up the OpenGL environment, loads the maze layout, initialise
 
     <div style="display: flex; justify-content: space-around; align-items: center;">
   <img src="https://github.com/NCCA/cfgaa24programingassignment-Oshersh15/blob/main/image/game.jpg" alt="Maze Image 1" width="300"/>
+
   ###### The image was generated using DALL-E
 
- Moving forward, the next phase of development will concentrate on:<ol> 
+  - Moving forward, the next phase of development will concentrate on:<ol> 
     <li>creating UI</li> 
     <li>making sure the game ends when the character and the ghost collide</li>
     <li> changing textures</li> </ol>

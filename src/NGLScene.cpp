@@ -582,7 +582,7 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
   case Qt::Key_Right:
       m_cameraYaw += rotateSpeed;
       updateCameraPosition();
-          if((int)m_cameraYaw % 90 == 0 && lastRotation != (int)m_cameraYaw)
+          if((int)m_cameraYaw % 90 == 0 && lastRotation != (int)m_cameraYaw) 
           {
               rotateMatrixLeft();
               std::cout << "reverse" << std::endl;

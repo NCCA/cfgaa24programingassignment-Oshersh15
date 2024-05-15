@@ -2,12 +2,15 @@
 
 ##
 - **Assignment Idea: First-person POV Pac-Man**     
-    A 3D twist on the classic arcade game. player will navigate the 3D maze, collecting dots and power-ups, and avoiding ghosts.
+    A 3D twist on the classic arcade game. player will navigate the 3D maze, collecting coins and avoiding ghost.
 
-- **What I'm planning on doing:**
-    - Use OpenGL to build a navigable 3D maze, with walls, dots, and power-ups and also create the ghosts.
+- **How the program will flow:**  
+The game first sets up the OpenGL environment, loads the maze layout, initialises the game entities at the starting positions. During the game loop, the game continously processes player input to navigate the maze, update the state of ghosts, checks for collisions between the player, coins, walls, and ghost. Rendering occurs in each loop iteration, drawing the maze, player's first-person view, ghosts, and coins. The loop runs until the game ends which is when the ghost gets to the player.
+
+- **What I did:**
+    - Use OpenGL to build a navigable 3D maze, with walls, coins, and create the ghost.
     - Implement physics to simulate movement within the maze, along with collision detection to manage interactions with walls, dots, power-ups and ghosts.
-    - Create a control system that allows players to navigate the maze, and collect and use power-ups.
+    - Create a control system that allows players to navigate the maze, and collect the coins.
 
 
 - **Project overview and process:**
@@ -16,28 +19,27 @@
     - **Array mapping** - A 2D array was created corresponding to the grid, where each cell was assigned a value based on the color detected in the image processing step:
                             - **1 (Wall)**: Indicates a black-colored area, suggesting the presence of a wall.
                             - **0 (Path)**: Represents a white-colored area, indicating open paths.
-    - **3D Maze Construction** - Utilizing the 2D array, I placed cubes within the 3D scene at positions corresponding to '1's in the array, effectively translating the 2D maze representation into a navigable 3D environment.
+    - **3D Maze Construction** - Utilising the 2D array, I placed cubes within the 3D scene at positions corresponding to '1's in the array and placed 'coins' where there are paths, effectively translating the 2D maze representation into a navigable 3D environment. A coin will disappear once the character steps in its place (as it's collected).
 
-- **Current status and next steps:**
 <div style="display: flex; justify-content: space-around; align-items: center;">
   <img src="https://github.com/NCCA/cfgaa24programingassignment-Oshersh15/blob/main/image/Maze.png" alt="Maze Image 1" width="300"/>
   <img src="https://github.com/NCCA/cfgaa24programingassignment-Oshersh15/blob/main/image/mazeScreenshot.png" alt="Maze Image 2" width="300"/>
 </div>
  The structure of the maze has been successfully implemented, with visual representation aligning with the conceptual design. 
  
- Continuing working on the project, I have implemented camera movement controlled by keys and set the initial camera position in the most central spot without a wall.
+   - **Key control** - I have implemented camera movement controlled by keys and set the initial camera position in the most central path. The camera position is represented by the number 2 within the array. The camera moves forward only, and rotations are required to change direction. Rotations are restricled to exactly 90-degree increments to ensure that movements align strictly with the grid so after a rotation, when to user wants to proceed forward, the camera angle will snap to the closesnt 90-degree increment.
 
- The collision detection is working as well, the user can go around the maze - he can only move forward so if he wants to move to another side, he will need to rotate (rotations MUST be in exactly 90 degrees, otherwise the character won't move).
+    - **Collision Detection** - Before each movement, collision detection checks are performed to ensure the path is clear. The array is used to verify whether the next step  is a wall (1) or a path (0). If it is a wall it will remain in place and if it is a path it will move.
 
- I added a sphere representing the ghost oh the game, it is "chasing" the character by checking all 4 direction, seeing which ones are possible to proceed to (are paths) and then compares the distances between those spaces and proceeds to the place with the shortest path to the character.
+    - **Ghost** - A ghost, represented as a sphere, is initially placed in a random corner of the maze. Then, it actively chases the player by calculating possible paths from its current position and the distance from the player and chooses the next step that will minimize the most distance to the player. The game ends when the ghost gets to the player and concludes with a "Game Over" message. 
 
- I added a coin to every path spot.
+    <div style="display: flex; justify-content: space-around; align-items: center;">
+  <img src="https://github.com/NCCA/cfgaa24programingassignment-Oshersh15/blob/main/image/game.jpg" alt="Maze Image 1" width="300"/>
+  The image was generated using DALL-E
 
  Moving forward, the next phase of development will concentrate on:<ol> 
-    <li>make coins dissapear once the character steps on the spot they are in</li> 
     <li>creating UI</li> 
     <li>making sure the game ends when the character and the ghost collide</li>
-    <li>making my movements and rotations better</li> 
     <li> changing textures</li> </ol>
     <ol>
     If I have time: 
@@ -45,19 +47,10 @@
     <li>maybe add more ghosts</li>
     </ol>
 
+   - **Bibliography**
+    https://www.enjoyalgorithms.com/blog/rotate-a-matrix-by-90-degrees-in-an-anticlockwise-direction - understanding how matrix rotation works.
 
+    -Most of the materials I used as a reference and for guidance where the materials in Jon Macey's WebPages and the NGL demos on NCCA gitHub, and as I stated before, my starting point was the VAOPrimitives demo.
 
-- **Design of classes / data structures:**
-    - **Game** - Manage the overall game state, including starting, pausing, ending, game loop and interactions between components. 
-    - **Player (Pac-Man)** - Represents the player navigating the maze. It tracks the first-person camera position, orientation, collected dots, and inventory of power-ups.
-    - **Maze** - The layout of the maze, including walls, dots, and power-ups locations. Also responsible for rendering the maze from the player's perspective.
-    - **Dot** - Collectible dot in the maze, manages state (collected or not) and rendering.
-    - **PowerUp** - Power-ups can be stored in the player's inventory and used against ghosts.
-    - **Ghost** - Represents the ghosts, managing their behaviours of chasing the player and responding to power-ups by exploding to pixels when getting hit by them. Also responsible for resetting the ghosts after they explode.
-    - **Inventory** - Manages the player's collection of power-ups. Allows for storing and using them.
-    - **Physics** - Handles movement, collision detection, and interactions between game entities.
-
-- **How the program will flow:**  
-    The game first sets up the OpenGL environment, loads the maze layout, initialises the game entities at the starting positions. During the game loop, the game continously processes player input to navigate the maze, update the state of ghosts, checks for collisions between the player, dots, power-ups, and ghosts, and applies the effects of the power-ups used by the player. The game also updates the inventory when power-ups are collected and allows the player to use them when he chooses to. Rendering occurs in each loop iteration, drawing the maze, player's first-person view, ghosts, and UI elements from the current game state. The loop runs until the game ends which is when all lives (3) are ran out, then the game concludes by displaying the final score and offering an option to restart or exit.
 
 

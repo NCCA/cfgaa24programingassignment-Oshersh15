@@ -2,9 +2,7 @@
 basic OpenGL demo modified from http://qt-project.org/doc/qt-5.0/qtgui/openglwindow.html
 ****************************************************************************/
 #include <QApplication>
-#include "includes.h"
-
-
+#include "NGLScene.h"
 
 int main(int argc, char *argv[])
 {

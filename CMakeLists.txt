@@ -46,7 +46,12 @@ add_executable(${TargetName}
 include_directories(include $ENV{HOME}/NGL/include)
 target_sources(${TargetName} PRIVATE ${PROJECT_SOURCE_DIR}/src/main.cpp  
 			${PROJECT_SOURCE_DIR}/src/NGLScene.cpp   
-			${PROJECT_SOURCE_DIR}/include/NGLScene.h  
+			${PROJECT_SOURCE_DIR}/include/NGLScene.h
+#            ${PROJECT_SOURCE_DIR}/src/Camera.cpp
+            ${PROJECT_SOURCE_DIR}/src/NGLSceneMouseControls.cpp
+#            ${PROJECT_SOURCE_DIR}/src/Maze.cpp
+#            ${PROJECT_SOURCE_DIR}/include/Camera.h
+#            ${PROJECT_SOURCE_DIR}/include/Maze.h
 )
 
 target_link_libraries(${TargetName} PRIVATE  NGL Qt::Widgets Qt::OpenGL)

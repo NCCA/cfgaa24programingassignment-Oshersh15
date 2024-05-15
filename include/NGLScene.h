@@ -1,14 +1,21 @@
 #ifndef NGLSCENE_H_
 #define NGLSCENE_H_
-#include <ngl/Mat4.h>
+
 #include <ngl/Transformation.h>
 #include "WindowParams.h"
 #include <QOpenGLWindow>
-#include <memory>
-#include "includes.h"
-
-#include <QObject>
-#include <QOpenGLWidget>
+#include <QApplication>
+#include <QLabel>
+#include <QDebug>
+#include <QMouseEvent>
+#include <QGuiApplication>
+#include <ngl/NGLInit.h>
+#include <ngl/VAOPrimitives.h>
+#include <ngl/ShaderLib.h>
+#include <QDir>
+#include <cmath>
+#include <random>
+#include <algorithm>
 
 //----------------------------------------------------------------------------------------------------------------------
 /// @file NGLScene.h
@@ -25,10 +32,10 @@
 
 class NGLScene : public QOpenGLWindow
 {
-    Q_OBJECT
+Q_OBJECT
 
 
-  public:
+public:
     //----------------------------------------------------------------------------------------------------------------------
     /// @brief ctor for our NGL drawing class
     /// @param [in] parent the parent window to the class
@@ -137,9 +144,9 @@ private:
     //----------------------------------------------------------------------------------------------------------------------
     void wheelEvent( QWheelEvent *_event) override;
     //----------------------------------------------------------------------------------------------------------------------
-     /// @brief called when the timer is triggered
-     //----------------------------------------------------------------------------------------------------------------------
-     void timerEvent(QTimerEvent *_event) override;
+    /// @brief called when the timer is triggered
+    //----------------------------------------------------------------------------------------------------------------------
+    void timerEvent(QTimerEvent *_event) override;
     //----------------------------------------------------------------------------------------------------------------------
     /// @brief a method to update the light
     //----------------------------------------------------------------------------------------------------------------------

@@ -4,6 +4,8 @@
 - **Assignment Idea: First-person POV Pac-Man**     
     A 3D twist on the classic arcade game. player will navigate the 3D maze, collecting coins and avoiding ghost.
 
+- **Link to the maze video** https://youtu.be/X5NTBP4BrRU
+
 - **How the program will flow:**  
 The game first sets up the OpenGL environment, loads the maze layout, initialises the game entities at the starting positions. During the game loop, the game continously processes player input to navigate the maze, update the state of ghosts, checks for collisions between the player, coins, walls, and ghost. Rendering occurs in each loop iteration, drawing the maze, player's first-person view, ghosts, and coins. The loop runs until the game ends which is when the ghost gets to the player.
 

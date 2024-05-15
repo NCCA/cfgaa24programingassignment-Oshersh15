@@ -50,7 +50,7 @@ The game first sets up the OpenGL environment, loads the maze layout, initialise
    - **Bibliography**
     https://www.enjoyalgorithms.com/blog/rotate-a-matrix-by-90-degrees-in-an-anticlockwise-direction - understanding how matrix rotation works.
 
-    - Most of the materials I used as a reference and for guidance where the materials in Jon Macey's WebPages and the NGL demos on NCCA gitHub, and as I stated before, my starting point was the VAOPrimitives demo.
+    Most of the materials I used as a reference and for guidance where the materials in Jon Macey's WebPages and the NGL demos on NCCA gitHub, and as I stated before, my starting point was the VAOPrimitives demo.
 
 
 

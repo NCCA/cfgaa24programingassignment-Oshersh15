@@ -25,7 +25,8 @@ The game first sets up the OpenGL environment, loads the maze layout, initialise
   <img src="https://github.com/NCCA/cfgaa24programingassignment-Oshersh15/blob/main/image/Maze.png" alt="Maze Image 1" width="300"/>
   <img src="https://github.com/NCCA/cfgaa24programingassignment-Oshersh15/blob/main/image/mazeScreenshot.png" alt="Maze Image 2" width="300"/>
 </div>
- The structure of the maze has been successfully implemented, with visual representation aligning with the conceptual design. 
+
+ ###### The structure of the maze has been successfully implemented, with visual representation aligning with the conceptual design. 
  
    - **Key control** - I have implemented camera movement controlled by keys and set the initial camera position in the most central path. The camera position is represented by the number 2 within the array. The camera moves forward only, and rotations are required to change direction. Rotations are restricled to exactly 90-degree increments to ensure that movements align strictly with the grid so after a rotation, when to user wants to proceed forward, the camera angle will snap to the closesnt 90-degree increment.
 
@@ -35,7 +36,7 @@ The game first sets up the OpenGL environment, loads the maze layout, initialise
 
     <div style="display: flex; justify-content: space-around; align-items: center;">
   <img src="https://github.com/NCCA/cfgaa24programingassignment-Oshersh15/blob/main/image/game.jpg" alt="Maze Image 1" width="300"/>
-  The image was generated using DALL-E
+  ###### The image was generated using DALL-E
 
  Moving forward, the next phase of development will concentrate on:<ol> 
     <li>creating UI</li> 
@@ -47,10 +48,10 @@ The game first sets up the OpenGL environment, loads the maze layout, initialise
     <li>maybe add more ghosts</li>
     </ol>
 
-   - **Bibliography**
+- **Bibliography**  
     https://www.enjoyalgorithms.com/blog/rotate-a-matrix-by-90-degrees-in-an-anticlockwise-direction - understanding how matrix rotation works.
 
-    Most of the materials I used as a reference and for guidance where the materials in Jon Macey's WebPages and the NGL demos on NCCA gitHub, and as I stated before, my starting point was the VAOPrimitives demo.
+    - Most of the materials I used as a reference and for guidance where the materials in Jon Macey's WebPages and the NGL demos on NCCA gitHub, and as I stated before, my starting point was the VAOPrimitives demo.
 
 
 

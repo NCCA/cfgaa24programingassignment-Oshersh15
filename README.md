@@ -41,11 +41,6 @@ The game first sets up the OpenGL environment, loads the maze layout, initialise
 
   ###### The image was generated using DALL-E
 
-  - Moving forward, the next phase of development will concentrate on:<ol> 
-    <li>creating UI</li> 
-    <li>making sure the game ends when the character and the ghost collide</li>
-    <li> changing textures</li> </ol>
-
 - **Bibliography**  
     https://www.enjoyalgorithms.com/blog/rotate-a-matrix-by-90-degrees-in-an-anticlockwise-direction - understanding how matrix rotation works.
 

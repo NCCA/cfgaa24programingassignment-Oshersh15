@@ -6,7 +6,7 @@
 
 - **Link to the maze video** https://youtu.be/X5NTBP4BrRU
 
-- - **Features:**
+- **Features:**
   - ***3D Maze Navigation:*** Navigate through a 3D maze with walls and paths.
   - ***Coin Collection:*** Collect coins throughout the maze.
   - ***Ghost AI:*** A ghost that chases the player using pathfinding algorithm, comparing ditances between possible paths.

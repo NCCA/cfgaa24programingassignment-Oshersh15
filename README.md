@@ -2,17 +2,25 @@
 
 ##
 - **Assignment Idea: First-person POV Pac-Man**     
-    A 3D twist on the classic arcade game. player will navigate the 3D maze, collecting coins and avoiding ghost.
+    A 3D twist on the classic arcade game. player will navigate the 3D maze, collecting coins and avoiding ghost, which actively chases the player.
 
 - **Link to the maze video** https://youtu.be/X5NTBP4BrRU
+
+- - **Features:**
+  - ***3D Maze Navigation:*** Navigate through a 3D maze with walls and paths.
+  - ***Coin Collection:*** Collect coins throughout the maze.
+  - ***Ghost AI:*** A ghost that chases the player using pathfinding algorithm, comparing ditances between possible paths.
+  - ***Collision Detection:*** Ensures interactions with maze walls and coins.
+  - ***First-person View:*** Immersive first-person camera perspective.
+  - ***Game Over Mechanic:*** The game ends when the ghost catches the player.
 
 - **How the program will flow:**  
 The game first sets up the OpenGL environment, loads the maze layout, initialises the game entities at the starting positions. During the game loop, the game continously processes player input to navigate the maze, update the state of ghosts, checks for collisions between the player, coins, walls, and ghost. Rendering occurs in each loop iteration, drawing the maze, player's first-person view, ghosts, and coins. The loop runs until the game ends which is when the ghost gets to the player.
 
 - **What I did:**
     - Use OpenGL to build a navigable 3D maze, with walls, coins, and create the ghost.
-    - Implement physics to simulate movement within the maze, along with collision detection to manage interactions with walls, dots, power-ups and ghosts.
-    - Create a control system that allows players to navigate the maze, and collect the coins.
+    - Implement collision detection to manage interactions with walls, coins, and ghost.
+    - Create a control system that allows players to navigate the maze, and collect the coins - to move the character the user needs to use to forward key, to rotate the user should press left and right keys.
 
 
 - **Project overview and process:**
@@ -41,10 +49,50 @@ The game first sets up the OpenGL environment, loads the maze layout, initialise
 
   ###### The image was generated using DALL-E
 
+ - **Classes:**
+    - **NGLScene** -
+        -***OverallControl:*** Acts as the main controller for the game, handling initialization, rendering, and user input.
+       -***OpenGL Initialisation:*** Sets up the OpenGL environment, including shaders, camera, and lighting.
+       -***Rendering:*** Renders the entire scene, including the maze, player, coins, and ghost.
+       -***User Input Handling:*** Processes keyboard inputs to control the player's movement and rotation.
+       -***Game State Handling:*** Manages the overall game state, including checking for collisions and updating positions.
+      
+   - **Maze** -
+      -***Maze Construction:*** Constructs the maze layout from an image.
+     -***Grid Management:*** Manages the 2D array representing the maze grid.
+     -***Collision Detection:*** Provides methods to check for collisions with walls.
+
+   - **Ghost** -
+    -***Ghost Initialisation:*** Sets the initial position of the ghost within the maze.
+    -***Pathfinding:*** Implements algorithms to chase the player by finding the shortest path.
+    -***Ghost Movement:*** Updates the ghost's position based on the pathfinding results.
+
+   - **Coins** -
+    -***Coin Placement:*** Manages the placement of coins within the maze.
+    -***Coin Collection:*** Handles the removal of coins when collected by the player.
+
++----------------+          +-----------------+
+|   NGLScene     |<-------->|      Maze       |
++----------------+          +-----------------+
+| - m_maze       |          | - mazeGrid      |
+| - m_ghost      |          | - loadMaze()    |
+| - initializeGL()|         | - rotateMatrix()|
+| - paintGL()    |          | - getMazeGrid() |
+| - keyPressEvent()|        | - setMazeGrid() |
++----------------+          +-----------------+
+        ^
+        |
+        |
++-----------------+          +-----------------+
+|     Ghost       |<-------->|      Coins      |
++-----------------+          +-----------------+
+| - findPathCorners()|       | - placeCoins()  |
+| - setInitialPosition()|    | - removeCoins() |
+| - findShortestPath()|      +-----------------+
++-----------------+
+
 - **Bibliography**  
     https://www.enjoyalgorithms.com/blog/rotate-a-matrix-by-90-degrees-in-an-anticlockwise-direction - understanding how matrix rotation works.
 
     - Most of the materials I used as a reference and for guidance where the materials in Jon Macey's WebPages and the NGL demos on NCCA gitHub, and as I stated before, my starting point was the VAOPrimitives demo.
-
-
-
+      

@@ -1,7 +1,6 @@
 #include "NGLScene.h"
-#include "Maze.h"
-#include "Coins.h"
-#include "Ghost.h"
+#include <QGuiApplication>
+#include <QApplication>
 
 NGLScene::NGLScene()
 {

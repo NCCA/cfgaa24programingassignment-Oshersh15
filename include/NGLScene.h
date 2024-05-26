@@ -4,11 +4,9 @@
 #include <ngl/Transformation.h>
 #include "WindowParams.h"
 #include <QOpenGLWindow>
-#include <QApplication>
 #include <QLabel>
 #include <QDebug>
 #include <QMouseEvent>
-#include <QGuiApplication>
 #include <ngl/NGLInit.h>
 #include <ngl/VAOPrimitives.h>
 #include <ngl/ShaderLib.h>

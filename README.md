@@ -50,27 +50,27 @@ The game first sets up the OpenGL environment, loads the maze layout, initialise
   ###### The image was generated using DALL-E
 
  - **Classes:**
-    - **NGLScene** -
-        -***OverallControl:*** Acts as the main controller for the game, handling initialization, rendering, and user input.
-       -***OpenGL Initialisation:*** Sets up the OpenGL environment, including shaders, camera, and lighting.
-       -***Rendering:*** Renders the entire scene, including the maze, player, coins, and ghost.
-       -***User Input Handling:*** Processes keyboard inputs to control the player's movement and rotation.
-       -***Game State Handling:*** Manages the overall game state, including checking for collisions and updating positions.
+    - **NGLScene** 
+        - ***OverallControl:*** Acts as the main controller for the game, handling initialization, rendering, and user input.
+       - ***OpenGL Initialisation:*** Sets up the OpenGL environment, including shaders, camera, and lighting.
+       - ***Rendering:*** Renders the entire scene, including the maze, player, coins, and ghost.
+       - ***User Input Handling:*** Processes keyboard inputs to control the player's movement and rotation.
+       - ***Game State Handling:*** Manages the overall game state, including checking for collisions and updating positions.
       
-   - **Maze** -
-      -***Maze Construction:*** Constructs the maze layout from an image.
-     -***Grid Management:*** Manages the 2D array representing the maze grid.
-     -***Collision Detection:*** Provides methods to check for collisions with walls.
+   - **Maze** 
+      - ***Maze Construction:*** Constructs the maze layout from an image.
+     - ***Grid Management:*** Manages the 2D array representing the maze grid.
+     - ***Collision Detection:*** Provides methods to check for collisions with walls.
 
-   - **Ghost** -
-    -***Ghost Initialisation:*** Sets the initial position of the ghost within the maze.
-    -***Pathfinding:*** Implements algorithms to chase the player by finding the shortest path.
-    -***Ghost Movement:*** Updates the ghost's position based on the pathfinding results.
+   - **Ghost** 
+    - ***Ghost Initialisation:*** Sets the initial position of the ghost within the maze.
+    - ***Pathfinding:*** Implements algorithms to chase the player by finding the shortest path.
+    - ***Ghost Movement:*** Updates the ghost's position based on the pathfinding results.
 
-   - **Coins** -
-    -***Coin Placement:*** Manages the placement of coins within the maze.
-    -***Coin Collection:*** Handles the removal of coins when collected by the player.
-
+   - **Coins** 
+    - ***Coin Placement:*** Manages the placement of coins within the maze.
+    - ***Coin Collection:*** Handles the removal of coins when collected by the player.
+<pre>
 +----------------+          +-----------------+
 |   NGLScene     |<-------->|      Maze       |
 +----------------+          +-----------------+
@@ -90,7 +90,7 @@ The game first sets up the OpenGL environment, loads the maze layout, initialise
 | - setInitialPosition()|    | - removeCoins() |
 | - findShortestPath()|      +-----------------+
 +-----------------+
-
+</pre>
 - **Bibliography**  
     https://www.enjoyalgorithms.com/blog/rotate-a-matrix-by-90-degrees-in-an-anticlockwise-direction - understanding how matrix rotation works.
 

@@ -45,11 +45,6 @@ The game first sets up the OpenGL environment, loads the maze layout, initialise
     <li>creating UI</li> 
     <li>making sure the game ends when the character and the ghost collide</li>
     <li> changing textures</li> </ol>
-    <ol>
-    If I have time: 
-    <li>maybe switching the sphere with an obj file of a mesh resembling the ghost more</li>
-    <li>maybe add more ghosts</li>
-    </ol>
 
 - **Bibliography**  
     https://www.enjoyalgorithms.com/blog/rotate-a-matrix-by-90-degrees-in-an-anticlockwise-direction - understanding how matrix rotation works.

@@ -16,6 +16,9 @@
 #include <cmath>
 #include <random>
 #include <algorithm>
+#include "Maze.h"
+#include "Coins.h"
+#include "Ghost.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 /// @file NGLScene.h
@@ -59,18 +62,13 @@ public:
     //----------------------------------------------------------------------------------------------------------------------
     void resizeGL(int _w, int _h) override;
 
-    void loadMaze();
-    void processArray();
     void renderMaze();
     bool isFullScreen = false;
-    void printMazeGrid();
-    void rotateMatrixRight();
-    void rotateMatrixLeft();
-    void findPathCorners();
-    void placeSphere(float x, float y, float z);
-    void findShortestPath();
     void GameOver();
-
+    void updateMazeGrid();
+    void updateCameraPositionInGrid();
+    void updateGhostPositionInGRid();
+    void updateCameraPosition();
 
 private:
     //----------------------------------------------------------------------------------------------------------------------
@@ -157,9 +155,10 @@ private:
     //----------------------------------------------------------------------------------------------------------------------
     void drawScene(const std::string &_shader);
 
+    std::unique_ptr<Maze> m_maze;
+    std::unique_ptr<Coins> m_coins;
+    std::unique_ptr<Ghost> m_ghost;
     bool run = false;
-
-    void updateCameraPosition();
 
     ngl::Vec3 m_cameraPosition;
     ngl::Vec3 m_cameraForward;
@@ -173,19 +172,11 @@ private:
     float lastzPosition;
     float xSpacing = 0.5f;  // Horizontal spacing between cubes
     float zSpacing = -0.5f;
-    int selectedX;
-    int selectedY;
-    float shortest = std::numeric_limits<float>::max();
-    int currentShortestX;
-    int currentShortestY;
-    float sphereLastxPosition;
-    float sphereLastzPosition;
-    GLuint m_textureName;
-    GLenum m_polyMode;
     int lastRotation = 0;
-    int Chosen;
-    float sphereInitialxPosition;
-    float sphereInitialzPosition;
+    bool hasRun = false;
+    int cameraGridX;
+    int cameraGridY;
+
 };
 
 
